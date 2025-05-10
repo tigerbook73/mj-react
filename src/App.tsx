@@ -5,6 +5,7 @@ import LobbyPage from "./app/LobbyPage";
 import GamePage from "./app/GamePage";
 import MainLayout from "./app/MainLayout";
 import SignInPage from "./app/SignInPage";
+import NotFound from "./app/NotFound";
 
 export function App() {
   return (
@@ -16,6 +17,7 @@ export function App() {
           <Route path="/sign-in" element={<SignInPage />} />
           <Route path="/lobby" element={<LobbyPage />} />
           <Route path="/game" element={<GamePage />} />
+          <Route path="/*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>

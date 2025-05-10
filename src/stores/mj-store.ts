@@ -32,7 +32,7 @@ interface MJStore {
     email: string;
     password: string;
   };
-  setUser: (user: { email: string; password: string }) => void;
+  setUser: (user: { email?: string; password?: string }) => void;
 
   // sign state
   signedIn: boolean;
@@ -42,9 +42,13 @@ interface MJStore {
   roomList: RoomModelInStore[];
   currentRoom: RoomModelInStore | null;
   currentPosition: Position | null;
+  setRoomList: (roomList: RoomModelInStore[]) => void;
+  setCurrentRoom: (room: RoomModelInStore | null) => void;
+  setCurrentPosition: (position: Position | null) => void;
 
   // game info
   currentGame: GameInStore | null;
+  setCurrentGame: (game: GameInStore | null) => void;
 
   // open
   open: boolean;
@@ -68,6 +72,14 @@ const storeCreator: StateCreator<MJStore> = (set: any) => {
   const setConnected = (connected: boolean) => {
     set((state: MJStore) => {
       state.connected = connected;
+      if (!connected) {
+        state.user.password = "";
+        state.roomList = [];
+        state.currentRoom = null;
+        state.currentPosition = null;
+        state.currentGame = null;
+      }
+
       refreshAppState(state);
     });
   };
@@ -98,19 +110,19 @@ const storeCreator: StateCreator<MJStore> = (set: any) => {
     });
   };
 
-  const setCurrentRoom = (room: RoomModelInStore) => {
+  const setCurrentRoom = (room: RoomModelInStore | null) => {
     set((state: MJStore) => {
       state.currentRoom = room;
     });
   };
 
-  const setCurrentPosition = (position: Position) => {
+  const setCurrentPosition = (position: Position | null) => {
     set((state: MJStore) => {
       state.currentPosition = position;
     });
   };
 
-  const setCurrentGame = (game: GameInStore) => {
+  const setCurrentGame = (game: GameInStore | null) => {
     set((state: MJStore) => {
       state.currentGame = game;
     });

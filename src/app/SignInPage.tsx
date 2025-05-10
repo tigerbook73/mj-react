@@ -1,26 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import useMJStore from "@/stores/mj-store";
+import { clientApi } from "@/client/client-api";
 
 export default function SignInPage() {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const user = useMJStore((state) => state.user);
+  const setUser = useMJStore((state) => state.setUser);
+  const setSignedIn = useMJStore((state) => state.setSignedIn);
+
+  const [formData, setFormData] = useState({ email: user.email, password: user.password });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const setUser = useMJStore((state) => state.setUser);
-  const setSignedIn = useMJStore((state) => state.setSignedIn);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
 
-    setUser(formData);
-    setSignedIn(true);
+    try {
+      await clientApi.signIn(formData.email, formData.password);
+      setUser(formData);
+      setSignedIn(true);
+    } catch (e) {
+      console.error(e);
+    }
   };
+
+  useEffect(() => {
+    if (user.email && user.password) {
+      setFormData({ email: user.email, password: user.password });
+    }
+  }, [user.email, user.password]);
 
   return (
     <div className="flex justify-center items-center">

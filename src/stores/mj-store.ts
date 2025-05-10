@@ -1,9 +1,10 @@
-import { create } from "zustand";
+import { create, type StateCreator } from "zustand";
 import { RoomModel } from "@/common/models/room.model";
 import type { PlayerModel } from "@/common/models/player.model";
 import type { Game, Position } from "@/common/core/mj.game";
 import type { InterfaceWithoutMethod } from "@/helper/types-helper";
 import { immer } from "zustand/middleware/immer";
+import { devtools } from "zustand/middleware";
 
 export enum AppState {
   Unconnected = "UNCONNECTED",
@@ -31,6 +32,7 @@ interface MJStore {
     email: string;
     password: string;
   };
+  setUser: (user: { email: string; password: string }) => void;
 
   // sign state
   signedIn: boolean;
@@ -49,84 +51,119 @@ interface MJStore {
   setOpen: (open: boolean) => void;
 }
 
-const useMJStore = create<MJStore, [["zustand/immer", never]]>(
-  immer((set) => {
-    const refreshAppState = (state: MJStore) => {
-      const { connected, signedIn, currentGame } = state;
-      if (!connected) {
-        state.appState = AppState.Unconnected;
-      } else if (!signedIn) {
-        state.appState = AppState.UnSignedIn;
-      } else if (!currentGame) {
-        state.appState = AppState.InLobby;
-      } else {
-        state.appState = AppState.InGame;
+const storeCreator: StateCreator<MJStore> = (set: any) => {
+  const refreshAppState = (state: MJStore) => {
+    const { connected, signedIn, currentGame } = state;
+    if (!connected) {
+      state.appState = AppState.Unconnected;
+    } else if (!signedIn) {
+      state.appState = AppState.UnSignedIn;
+    } else if (!currentGame) {
+      state.appState = AppState.InLobby;
+    } else {
+      state.appState = AppState.InGame;
+    }
+  };
+
+  const setConnected = (connected: boolean) => {
+    set((state: MJStore) => {
+      state.connected = connected;
+      refreshAppState(state);
+    });
+  };
+
+  const setUser = (user: { email: string; password: string }) =>
+    set((state: MJStore) => {
+      state.user = user;
+    });
+
+  const setSignedIn = (value: boolean) => {
+    set((state: MJStore) => {
+      state.signedIn = value;
+      if (!value) {
+        // reset other value
+        state.user.password = "";
+        state.roomList = [];
+        state.currentRoom = null;
+        state.currentPosition = null;
+        state.currentGame = null;
       }
-    };
+      refreshAppState(state);
+    });
+  };
 
-    const setConnected = (connected: boolean) => {
-      set((state) => {
-        state.connected = connected;
-        refreshAppState(state);
-      });
-    };
+  const setRoomList = (roomList: RoomModelInStore[]) => {
+    set((state: MJStore) => {
+      state.roomList = roomList;
+    });
+  };
 
-    const setSignedIn = (value: boolean) => {
-      set((state) => {
-        state.signedIn = value;
-        if (!value) {
-          // reset other value
-          state.user.password = "";
-          state.roomList = [];
-          state.currentRoom = null;
-          state.currentPosition = null;
-          state.currentGame = null;
-        }
-        refreshAppState(state);
-      });
-    };
+  const setCurrentRoom = (room: RoomModelInStore) => {
+    set((state: MJStore) => {
+      state.currentRoom = room;
+    });
+  };
 
-    const setCurrentGame = (game: GameInStore) => {
-      set((state) => {
-        state.currentGame = game;
-      });
-    };
+  const setCurrentPosition = (position: Position) => {
+    set((state: MJStore) => {
+      state.currentPosition = position;
+    });
+  };
 
-    return {
-      // app state
-      appState: AppState.Unconnected,
+  const setCurrentGame = (game: GameInStore) => {
+    set((state: MJStore) => {
+      state.currentGame = game;
+    });
+  };
 
-      // connected state
-      connected: false,
-      setConnected,
+  const setOpen = (open: boolean) => {
+    set((state: MJStore) => {
+      state.open = open;
+    });
+  };
 
-      // login user
-      user: {
-        email: "example@email.com",
-        password: "",
-      },
-      setUser: (user: { email: string; password: string }) => set((state) => (state.user = user)),
+  return {
+    // app state
+    appState: AppState.Unconnected,
 
-      // sign state
-      signedIn: false,
-      setSignedIn: setSignedIn,
+    // connected state
+    connected: false,
+    setConnected,
 
-      // room info
-      roomList: [],
-      currentRoom: null,
-      currentPosition: null,
-      currentGame: null,
-      setRoomList: (roomList: RoomModelInStore[]) => set((state) => (state.roomList = roomList)),
-      setCurrentRoom: (room: RoomModelInStore) => set((state) => (state.currentRoom = room)),
-      setCurrentPosition: (position: Position) => set((state) => (state.currentPosition = position)),
+    // login user
+    user: {
+      email: "example@email.com",
+      password: "",
+    },
+    setUser,
 
-      setCurrentGame,
+    // sign state
+    signedIn: false,
+    setSignedIn,
 
-      // open
-      open: false,
-      setOpen: (open: boolean) => set((state) => (state.open = open)),
-    };
-  })
-);
+    // room info
+    roomList: [],
+    currentRoom: null,
+    currentPosition: null,
+    currentGame: null,
+    setRoomList,
+    setCurrentRoom,
+    setCurrentPosition,
+
+    // game info
+    setCurrentGame,
+
+    // open
+    open: false,
+    setOpen,
+  };
+};
+
+const useMJStore =
+  process.env.NODE_ENV === "development"
+    ? create<MJStore, [["zustand/devtools", never], ["zustand/immer", never]]>(
+        devtools(immer(storeCreator), { name: "MJStore" })
+      )
+    : create<MJStore, [["zustand/immer", never]]>(immer(storeCreator));
 
 export default useMJStore;

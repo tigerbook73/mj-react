@@ -17,6 +17,7 @@ const stateToPath = {
 
 export default function MainLayout() {
   const appState = useMJStore((state) => state.appState);
+  const user = useMJStore((state) => state.user);
   const currentRoom = useMJStore((state) => state.currentRoom);
   const setConnected = useMJStore((state) => state.setConnected);
   const setSignedIn = useMJStore((state) => state.setSignedIn);
@@ -92,7 +93,7 @@ export default function MainLayout() {
           <Separator />
           <div>Mahjong Online</div>
           <div className="flex-1"></div>
-          <div>example@email.com</div>
+          <div>{user.email}</div>
           <Separator />
           {appState === AppState.InGame && (
             <Button variant={"ghost"} onClick={handleQuitGame}>

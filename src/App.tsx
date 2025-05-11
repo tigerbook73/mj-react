@@ -6,6 +6,7 @@ import GamePage from "./app/GamePage";
 import MainLayout from "./app/MainLayout";
 import SignInPage from "./app/SignInPage";
 import NotFound from "./app/NotFound";
+import { Toaster } from "./components/ui/sonner";
 
 export function App() {
   return (
@@ -20,6 +21,7 @@ export function App() {
           <Route path="/*" element={<NotFound />} />
         </Route>
       </Routes>
+      <Toaster position="top-center" />
     </BrowserRouter>
   );
 }

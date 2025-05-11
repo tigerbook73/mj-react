@@ -1,4 +1,4 @@
-import { Dice5, Home, LogIn, MonitorUp, School } from "lucide-react";
+import { Dice5, Home, LogIn, MonitorUp, School, TestTube2 } from "lucide-react";
 
 import {
   Sidebar,
@@ -38,6 +38,11 @@ const items = [
     title: "Game",
     url: "/game",
     icon: Dice5,
+  },
+  {
+    title: "Test",
+    url: "/test",
+    icon: TestTube2,
   },
 ];
 

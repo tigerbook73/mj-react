@@ -7,6 +7,7 @@ import MainLayout from "./app/MainLayout";
 import SignInPage from "./app/SignInPage";
 import NotFound from "./app/NotFound";
 import { Toaster } from "./components/ui/sonner";
+import TestPage from "./app/TestPage";
 
 export function App() {
   return (
@@ -18,6 +19,7 @@ export function App() {
           <Route path="/sign-in" element={<SignInPage />} />
           <Route path="/lobby" element={<LobbyPage />} />
           <Route path="/game" element={<GamePage />} />
+          <Route path="/test" element={<TestPage />} />
           <Route path="/*" element={<NotFound />} />
         </Route>
       </Routes>

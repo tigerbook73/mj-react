@@ -48,7 +48,7 @@ export default function WallArea({ direction }: WallAreaProps) {
 
   return (
     <div
-      className={cn("size-full flex items-center justify-center bg-amber-200", {
+      className={cn("size-full flex items-center justify-center bg-yellow-900", {
         "flex-col": direction === Direction.Top || direction === Direction.Bottom,
         "flex-row": direction === Direction.Left || direction === Direction.Right,
       })}

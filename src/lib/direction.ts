@@ -8,7 +8,31 @@ export enum Direction {
   None = "none",
 }
 
+const directionTextMap = {
+  [Direction.Top]: "上",
+  [Direction.Bottom]: "下",
+  [Direction.Right]: "右",
+  [Direction.Left]: "左",
+  [Direction.None]: "无",
+};
+
+const positionTexMap = {
+  [Position.East]: "东",
+  [Position.South]: "南",
+  [Position.West]: "西",
+  [Position.North]: "北",
+  [Position.None]: "无",
+};
+
 export class CommonUtil {
+  static directionToText(direction: Direction): string {
+    return directionTextMap[direction] ?? "未知";
+  }
+
+  static positionToText(position: Position): string {
+    return positionTexMap[position] ?? "未知";
+  }
+
   static mapPosition(myPosition: Position, direction: Direction): Position {
     if (myPosition === Position.None || direction === Direction.None) {
       return Position.None;

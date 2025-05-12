@@ -1,19 +1,9 @@
-import { Position } from "@/common/core/mj.game";
+import PlayerAreaHand from "@/components/PlayerAreaHand";
 import PlayerAreaTopLeft from "@/components/PlayerAreaTopLeft";
-import { CommonUtil, Direction } from "@/lib/direction";
-import { cn } from "@/lib/utils";
-import useMJStore from "@/stores/mj-store";
+import { Direction } from "@/lib/direction";
 
 export default function GamePage() {
-  const currentPosition = useMJStore((state) => state.currentPosition);
-  const currentGame = useMJStore((state) => state.currentGame);
-
-  const currentDirection = CommonUtil.mapDirection(
-    currentPosition ?? Position.None,
-    currentGame?.current?.position ?? Position.None
-  );
-
-  return currentGame ? (
+  return (
     <div className="w-full max-w-[100vmin] max-h-[calc(100vh-64px)] aspect-1/1 bg-blue-200 flex flex-col">
       {/* p-top  */}
       <div className="flex-1 flex">
@@ -23,7 +13,9 @@ export default function GamePage() {
         </div>
 
         {/* p-top-center */}
-        <div className={cn("w-76/100 bg-blue-500", currentDirection === Direction.Top && "bg-blue-300")}></div>
+        <div className="w-76/100">
+          <PlayerAreaHand direction={Direction.Top} />
+        </div>
 
         {/* p-top-right */}
         <div className="flex-1"></div>
@@ -32,7 +24,9 @@ export default function GamePage() {
       {/* p-center */}
       <div className="h-76/100 flex justify-center items-stretch">
         {/* p-center-left */}
-        <div className={cn("flex-1 bg-blue-500", currentDirection === Direction.Top && "bg-blue-300")} />
+        <div className="flex-1">
+          <PlayerAreaHand direction={Direction.Left} />
+        </div>
 
         {/* p-center-center */}
         <div className={"w-76/100 flex flex-col bg-yellow-900 "}>
@@ -106,25 +100,22 @@ export default function GamePage() {
         </div>
 
         {/* p-center-right */}
-        <div
-          className={cn(
-            "flex-1 flex items-center justify-center bg-blue-500",
-            currentDirection === Direction.Top && "bg-blue-300"
-          )}
-        ></div>
+        <div className="flex-1">
+          <PlayerAreaHand direction={Direction.Right} />
+        </div>
       </div>
 
-      {/* p-bottom-*/}
+      {/* p-bottom */}
       <div className="flex-1 flex ">
         {/* p-bottom-left */}
         <div className="flex-1 flex items-center justify-center"></div>
         {/* p-bottom-center */}
-        <div className={cn("w-76/100 bg-blue-500", currentDirection === Direction.Top && "bg-blue-300")} />
+        <div className="w-76/100">
+          <PlayerAreaHand direction={Direction.Bottom} />
+        </div>
         {/* p-bottom-right */}
         <div className="flex-1 flex items-center justify-center"></div>
       </div>
     </div>
-  ) : (
-    <div> </div>
   );
 }

@@ -1,4 +1,5 @@
 import CenterArea from "@/components/CenterArea";
+import DiscardAreaSide from "@/components/DiscardAreaSide";
 import PlayerAreaSide from "@/components/PlayerAreaSide";
 import PlayerAreaTopLeft from "@/components/PlayerAreaTopLeft";
 import WallAreaSide from "@/components/WallAreaSide";
@@ -61,7 +62,9 @@ export default function GamePage() {
                 <div className="flex-1 flex items-center justify-center"></div>
 
                 {/* d-top-center */}
-                <div className={"w-62/100 "} />
+                <div className={"w-62/100 "}>
+                  <DiscardAreaSide direction={Direction.Top} />
+                </div>
 
                 {/* d-top-right */}
                 <div className="flex-1"></div>
@@ -70,7 +73,9 @@ export default function GamePage() {
               {/* d-center */}
               <div className="h-62/100 flex justify-center items-stretch">
                 {/* d-center-left */}
-                <div className="flex-1 " />
+                <div className="flex-1">
+                  <DiscardAreaSide direction={Direction.Left} />
+                </div>
 
                 {/* d-center-center */}
                 <div className={"w-62/100"}>
@@ -78,7 +83,9 @@ export default function GamePage() {
                 </div>
 
                 {/* d-center-right */}
-                <div className="flex-1 flex items-center justify-center "></div>
+                <div className="flex-1 flex items-center justify-center ">
+                  <DiscardAreaSide direction={Direction.Right} />
+                </div>
               </div>
 
               {/* d-bottom */}
@@ -86,7 +93,9 @@ export default function GamePage() {
                 {/* d-bottom-left */}
                 <div className="flex-1 flex items-center justify-center"></div>
                 {/* d-bottom-center */}
-                <div className={"w-62/100"} />
+                <div className={"w-62/100"}>
+                  <DiscardAreaSide direction={Direction.Bottom} />
+                </div>
                 {/* d-bottom-right */}
                 <div className="flex-1 flex items-center justify-center"></div>
               </div>

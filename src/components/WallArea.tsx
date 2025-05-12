@@ -61,8 +61,8 @@ export default function WallArea({ direction }: WallAreaProps) {
           "flex-col": direction === Direction.Right,
         })}
       >
-        {firstRow.map((tile) => (
-          <GameTile key={tile.id} tile={tile} />
+        {firstRow.map((tile, index) => (
+          <GameTile key={index} tile={tile} />
         ))}
       </div>
       <div
@@ -73,8 +73,8 @@ export default function WallArea({ direction }: WallAreaProps) {
           "flex-col": direction === Direction.Right,
         })}
       >
-        {secondRow.map((tile) => (
-          <GameTile key={tile.id} tile={tile} />
+        {secondRow.map((tile, index) => (
+          <GameTile key={index} tile={tile} />
         ))}
       </div>
     </div>

@@ -15,6 +15,7 @@ export enum AppState {
 
 export type PlayerModelInStore = InterfaceWithoutMethod<PlayerModel>;
 export type RoomModelInStore = InterfaceWithoutMethod<Omit<typeof RoomModel.prototype, "game">>;
+export type SeatModelInStore = InterfaceWithoutMethod<Omit<typeof PlayerModel.prototype, "game">>;
 export type GameInStore = InterfaceWithoutMethod<
   Omit<typeof Game.prototype, "reversePickPosition" | "reversePickIndex" | "passedPlayers" | "queuedActions">
 >;
@@ -125,6 +126,7 @@ const storeCreator: StateCreator<MJStore> = (set: any) => {
   const setCurrentGame = (game: GameInStore | null) => {
     set((state: MJStore) => {
       state.currentGame = game;
+      refreshAppState(state);
     });
   };
 

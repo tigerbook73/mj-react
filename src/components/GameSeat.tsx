@@ -1,10 +1,9 @@
 import { cn } from "@/lib/utils";
-import { PlayerModel } from "@/common/models/player.model";
-import { type InterfaceWithoutMethod } from "@/helper/types-helper";
 import { Position } from "@/common/core/mj.game";
+import type { SeatModelInStore } from "@/stores/mj-store";
 
-interface GameSeatProp {
-  seat: InterfaceWithoutMethod<PlayerModel>;
+export interface GameSeatProp {
+  seat: SeatModelInStore;
 }
 
 const positionMap = {

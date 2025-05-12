@@ -9,7 +9,7 @@ export default function PlayerAreaHand({
   className,
   ...props
 }: { direction: Direction } & React.ComponentProps<"div">) {
-  const myPosition = useMJStore((state) => state.myPossition);
+  const myPosition = useMJStore((state) => state.myPosition);
   const currentPlayerPosition = useMJStore((state) => state.currentGame?.current?.position);
 
   // this player's position

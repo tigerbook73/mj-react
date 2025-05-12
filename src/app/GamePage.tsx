@@ -1,3 +1,4 @@
+import CenterArea from "@/components/CenterArea";
 import PlayerAreaHand from "@/components/PlayerAreaHand";
 import PlayerAreaTopLeft from "@/components/PlayerAreaTopLeft";
 import WallArea from "@/components/WallArea";
@@ -72,7 +73,9 @@ export default function GamePage() {
                 <div className="flex-1 " />
 
                 {/* d-center-center */}
-                <div className={"w-62/100 bg-green-900"}></div>
+                <div className={"w-62/100"}>
+                  <CenterArea />
+                </div>
 
                 {/* d-center-right */}
                 <div className="flex-1 flex items-center justify-center "></div>

@@ -42,7 +42,7 @@ interface MJStore {
   // room info
   roomList: RoomModelInStore[];
   myRoom: RoomModelInStore | null;
-  myPossition: Position | null;
+  myPosition: Position | null;
   setRoomList: (roomList: RoomModelInStore[]) => void;
   setMyRoom: (room: RoomModelInStore | null) => void;
   setMyPosition: (position: Position | null) => void;
@@ -77,7 +77,7 @@ const storeCreator: StateCreator<MJStore> = (set: any) => {
         state.user.password = "";
         state.roomList = [];
         state.myRoom = null;
-        state.myPossition = null;
+        state.myPosition = null;
         state.currentGame = null;
       }
 
@@ -98,7 +98,7 @@ const storeCreator: StateCreator<MJStore> = (set: any) => {
         state.user.password = "";
         state.roomList = [];
         state.myRoom = null;
-        state.myPossition = null;
+        state.myPosition = null;
         state.currentGame = null;
       }
       refreshAppState(state);
@@ -119,7 +119,7 @@ const storeCreator: StateCreator<MJStore> = (set: any) => {
 
   const setMyPosition = (position: Position | null) => {
     set((state: MJStore) => {
-      state.myPossition = position;
+      state.myPosition = position;
     });
   };
 
@@ -158,7 +158,7 @@ const storeCreator: StateCreator<MJStore> = (set: any) => {
     // room info
     roomList: [],
     myRoom: null,
-    myPossition: null,
+    myPosition: null,
     currentGame: null,
     setRoomList,
     setMyRoom,

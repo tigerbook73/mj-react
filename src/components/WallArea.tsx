@@ -10,7 +10,7 @@ interface WallAreaProps {
 
 export default function WallArea({ direction }: WallAreaProps) {
   const open = useMJStore((state) => state.open);
-  const myPosition = useMJStore((state) => state.myPossition);
+  const myPosition = useMJStore((state) => state.myPosition);
   const currentGame = useMJStore((state) => state.currentGame);
   const wallTiles = currentGame?.walls[CommonUtil.mapPosition(myPosition ?? Position.None, direction)].tiles ?? [];
 

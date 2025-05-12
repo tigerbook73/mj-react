@@ -15,7 +15,7 @@ interface GameRoomProps {
 
 export default function GameRoom({ room, className, ...props }: GameRoomProps & React.ComponentProps<"div">) {
   const myRoom = useMJStore((state) => state.myRoom);
-  const myPosition = useMJStore((state) => state.myPossition);
+  const myPosition = useMJStore((state) => state.myPosition);
 
   const nonPlayer = {
     userName: "",

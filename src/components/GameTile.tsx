@@ -66,7 +66,7 @@ const clsImageBottom = "transform rotate-0";
 const clsImageLeft = "transform rotate-90";
 const clsImageRight = "transform rotate-[-90deg]";
 
-export default function GameTile({ tile }: { tile: GameTileProp }) {
+export default function GameTile({ tile, ...props }: { tile: GameTileProp } & React.ComponentProps<"div">) {
   const name = TileCore.fromId(tile.id).name;
   const imgSrc = imageNames[name] ? `/svgs/Regular/${imageNames[name]}` : "/svgs/Black/Blank.svg";
   const showImage = tile.id !== TileCore.voidId && !tile.back;
@@ -95,7 +95,7 @@ export default function GameTile({ tile }: { tile: GameTileProp }) {
   );
 
   return (
-    <div className={tileClass} style={tileStyle}>
+    <div className={tileClass} style={tileStyle} {...props}>
       {showImage && <img src={imgSrc} className={imageClass} />}
     </div>
   );

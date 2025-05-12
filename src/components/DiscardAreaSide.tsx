@@ -10,7 +10,6 @@ interface DiscardAreaProps {
 }
 
 export default function DiscardAreaSide({ direction }: DiscardAreaProps) {
-  const open = useMJStore((state) => state.open);
   const myPosition = useMJStore((state) => state.myPosition);
   const currentGame = useMJStore((state) => state.currentGame);
   const discardTiles =
@@ -29,7 +28,7 @@ export default function DiscardAreaSide({ direction }: DiscardAreaProps) {
       id: tileId,
       direction,
       size,
-      back: !open,
+      back: false,
       selected: false,
     })
   );
@@ -44,7 +43,7 @@ export default function DiscardAreaSide({ direction }: DiscardAreaProps) {
       id: tileId,
       direction,
       size,
-      back: !open,
+      back: false,
       selected: false,
     })
   );

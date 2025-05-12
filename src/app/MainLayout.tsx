@@ -17,7 +17,7 @@ const stateToPath = {
 export default function MainLayout() {
   const appState = useMJStore((state) => state.appState);
   const user = useMJStore((state) => state.user);
-  const currentRoom = useMJStore((state) => state.currentRoom);
+  const myRoom = useMJStore((state) => state.myRoom);
   const setSignedIn = useMJStore((state) => state.setSignedIn);
 
   // redirect to the correct page based on app state
@@ -41,12 +41,12 @@ export default function MainLayout() {
   };
 
   const handleQuitGame = async () => {
-    if (!currentRoom) {
+    if (!myRoom) {
       return;
     }
 
     try {
-      await clientApi.quitGame(currentRoom.name);
+      await clientApi.quitGame(myRoom.name);
     } catch (e) {
       console.error(e);
     }

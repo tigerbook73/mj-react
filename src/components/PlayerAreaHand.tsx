@@ -9,24 +9,24 @@ export default function PlayerAreaHand({
   className,
   ...props
 }: { direction: Direction } & React.ComponentProps<"div">) {
-  const myPosition = useMJStore((state) => state.currentPosition);
+  const myPosition = useMJStore((state) => state.myPossition);
   const currentPlayerPosition = useMJStore((state) => state.currentGame?.current?.position);
 
-  const currentPlayerDirection = CommonUtil.mapDirection(
-    myPosition ?? Position.None,
-    currentPlayerPosition ?? Position.None
-  );
+  // this player's position
+  const position = CommonUtil.mapPosition(myPosition ?? Position.None, direction);
+  const positionText = CommonUtil.positionToText(position);
 
   return (
     <div
       className={cn(
         "h-full w-full flex flex-col justify-center items-center",
-        direction === currentPlayerDirection ? "bg-green-500" : "bg-green-800",
+        position === currentPlayerPosition ? "bg-green-500" : "bg-green-800",
         className
       )}
       {...props}
     >
-      {direction}
+      <div>{direction}</div>
+      <div>{positionText}</div>
     </div>
   );
 }

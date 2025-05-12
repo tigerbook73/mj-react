@@ -24,8 +24,8 @@ class MjGameService {
     const {
       //
       setRoomList,
-      setCurrentRoom,
-      setCurrentPosition,
+      setMyRoom: setCurrentRoom,
+      setMyPosition: setCurrentPosition,
       setCurrentGame,
     } = useMJStore.getState();
 

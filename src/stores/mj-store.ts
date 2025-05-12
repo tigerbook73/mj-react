@@ -41,11 +41,11 @@ interface MJStore {
 
   // room info
   roomList: RoomModelInStore[];
-  currentRoom: RoomModelInStore | null;
-  currentPosition: Position | null;
+  myRoom: RoomModelInStore | null;
+  myPossition: Position | null;
   setRoomList: (roomList: RoomModelInStore[]) => void;
-  setCurrentRoom: (room: RoomModelInStore | null) => void;
-  setCurrentPosition: (position: Position | null) => void;
+  setMyRoom: (room: RoomModelInStore | null) => void;
+  setMyPosition: (position: Position | null) => void;
 
   // game info
   currentGame: GameInStore | null;
@@ -76,8 +76,8 @@ const storeCreator: StateCreator<MJStore> = (set: any) => {
       if (!connected) {
         state.user.password = "";
         state.roomList = [];
-        state.currentRoom = null;
-        state.currentPosition = null;
+        state.myRoom = null;
+        state.myPossition = null;
         state.currentGame = null;
       }
 
@@ -97,8 +97,8 @@ const storeCreator: StateCreator<MJStore> = (set: any) => {
         // reset other value
         state.user.password = "";
         state.roomList = [];
-        state.currentRoom = null;
-        state.currentPosition = null;
+        state.myRoom = null;
+        state.myPossition = null;
         state.currentGame = null;
       }
       refreshAppState(state);
@@ -111,15 +111,15 @@ const storeCreator: StateCreator<MJStore> = (set: any) => {
     });
   };
 
-  const setCurrentRoom = (room: RoomModelInStore | null) => {
+  const setMyRoom = (room: RoomModelInStore | null) => {
     set((state: MJStore) => {
-      state.currentRoom = room;
+      state.myRoom = room;
     });
   };
 
-  const setCurrentPosition = (position: Position | null) => {
+  const setMyPosition = (position: Position | null) => {
     set((state: MJStore) => {
-      state.currentPosition = position;
+      state.myPossition = position;
     });
   };
 
@@ -157,12 +157,12 @@ const storeCreator: StateCreator<MJStore> = (set: any) => {
 
     // room info
     roomList: [],
-    currentRoom: null,
-    currentPosition: null,
+    myRoom: null,
+    myPossition: null,
     currentGame: null,
     setRoomList,
-    setCurrentRoom,
-    setCurrentPosition,
+    setMyRoom,
+    setMyPosition,
 
     // game info
     setCurrentGame,

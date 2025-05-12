@@ -14,8 +14,8 @@ interface GameRoomProps {
 }
 
 export default function GameRoom({ room, className, ...props }: GameRoomProps & React.ComponentProps<"div">) {
-  const currentRoom = useMJStore((state) => state.currentRoom);
-  const currentPosition = useMJStore((state) => state.currentPosition);
+  const myRoom = useMJStore((state) => state.myRoom);
+  const myPosition = useMJStore((state) => state.myPossition);
 
   const nonPlayer = {
     userName: "",
@@ -47,7 +47,7 @@ export default function GameRoom({ room, className, ...props }: GameRoomProps & 
     }
 
     // already at the position
-    if (currentRoom?.name == room.name && currentPosition === seat.position) {
+    if (myRoom?.name == room.name && myPosition === seat.position) {
       try {
         await clientApi.leaveRoom(room.name);
       } catch (error) {
@@ -65,10 +65,10 @@ export default function GameRoom({ room, className, ...props }: GameRoomProps & 
 
     // position is available
     if (seat.type === UserType.Bot) {
-      if (currentPosition !== null) {
+      if (myPosition !== null) {
         // if the player is currently in a room, leave it
         try {
-          await clientApi.leaveRoom(currentRoom!.name);
+          await clientApi.leaveRoom(myRoom!.name);
         } catch (error) {
           toast.warning("Failed to leave current room");
           console.error("Failed to leave current room", error);
@@ -88,7 +88,7 @@ export default function GameRoom({ room, className, ...props }: GameRoomProps & 
   }
 
   async function handleEnterGame() {
-    if (!currentRoom) {
+    if (!myRoom) {
       toast.warning("Please join a room first");
       return;
     }

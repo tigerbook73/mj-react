@@ -11,6 +11,7 @@ const positionMap = {
   [Position.West]: "西",
   [Position.North]: "北",
   [Position.South]: "南",
+  [Position.None]: "",
 };
 
 export default function GameSeat({ seat, className, ...props }: GameSeatProp & React.ComponentProps<"div">) {

@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import useMJStore from "@/stores/mj-store";
 import type React from "react";
 
-export default function PlayerAreaHand({
+export default function PlayerAreaSide({
   direction,
   className,
   ...props

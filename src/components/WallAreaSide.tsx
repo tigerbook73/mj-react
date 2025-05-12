@@ -8,7 +8,7 @@ interface WallAreaProps {
   direction: Direction;
 }
 
-export default function WallArea({ direction }: WallAreaProps) {
+export default function WallAreaSide({ direction }: WallAreaProps) {
   const open = useMJStore((state) => state.open);
   const myPosition = useMJStore((state) => state.myPosition);
   const currentGame = useMJStore((state) => state.currentGame);

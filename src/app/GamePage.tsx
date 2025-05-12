@@ -1,7 +1,7 @@
 import CenterArea from "@/components/CenterArea";
-import PlayerAreaHand from "@/components/PlayerAreaHand";
+import PlayerAreaSide from "@/components/PlayerAreaSide";
 import PlayerAreaTopLeft from "@/components/PlayerAreaTopLeft";
-import WallArea from "@/components/WallArea";
+import WallAreaSide from "@/components/WallAreaSide";
 import { Direction } from "@/lib/direction";
 
 export default function GamePage() {
@@ -16,7 +16,7 @@ export default function GamePage() {
 
         {/* p-top-center */}
         <div className="w-78/100">
-          <PlayerAreaHand direction={Direction.Top} />
+          <PlayerAreaSide direction={Direction.Top} />
         </div>
 
         {/* p-top-right */}
@@ -27,7 +27,7 @@ export default function GamePage() {
       <div className="h-78/100 flex justify-center items-stretch">
         {/* p-center-left */}
         <div className="flex-1">
-          <PlayerAreaHand direction={Direction.Left} />
+          <PlayerAreaSide direction={Direction.Left} />
         </div>
 
         {/* p-center-center */}
@@ -39,7 +39,7 @@ export default function GamePage() {
 
             {/* w-top-center */}
             <div className={"w-72/100"}>
-              <WallArea direction={Direction.Top} />
+              <WallAreaSide direction={Direction.Top} />
             </div>
 
             {/* w-top-right */}
@@ -50,7 +50,7 @@ export default function GamePage() {
           <div className="h-72/100 flex justify-center items-stretch">
             {/* w-center-left */}
             <div className="flex-1">
-              <WallArea direction={Direction.Left} />
+              <WallAreaSide direction={Direction.Left} />
             </div>
 
             {/* w-center-center */}
@@ -94,7 +94,7 @@ export default function GamePage() {
 
             {/* w-center-right */}
             <div className="flex-1 ">
-              <WallArea direction={Direction.Right} />
+              <WallAreaSide direction={Direction.Right} />
             </div>
           </div>
 
@@ -104,7 +104,7 @@ export default function GamePage() {
             <div className="flex-1 flex items-center justify-center"></div>
             {/* w-bottom-center */}
             <div className="w-72/100 ">
-              <WallArea direction={Direction.Bottom} />
+              <WallAreaSide direction={Direction.Bottom} />
             </div>
             {/* w-bottom-right */}
             <div className="flex-1 flex items-center justify-center"></div>
@@ -113,7 +113,7 @@ export default function GamePage() {
 
         {/* p-center-right */}
         <div className="flex-1">
-          <PlayerAreaHand direction={Direction.Right} />
+          <PlayerAreaSide direction={Direction.Right} />
         </div>
       </div>
 
@@ -123,7 +123,7 @@ export default function GamePage() {
         <div className="flex-1 flex items-center justify-center"></div>
         {/* p-bottom-center */}
         <div className="w-78/100">
-          <PlayerAreaHand direction={Direction.Bottom} />
+          <PlayerAreaSide direction={Direction.Bottom} />
         </div>
         {/* p-bottom-right */}
         <div className="flex-1 flex items-center justify-center"></div>

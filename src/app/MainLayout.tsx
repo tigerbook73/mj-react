@@ -25,7 +25,7 @@ export default function MainLayout() {
   const navigate = useNavigate();
   useEffect(() => {
     const path = stateToPath[appState];
-    if (path === location.pathname) {
+    if (location.pathname === "/test" || location.pathname === path) {
       return;
     }
     navigate(path);

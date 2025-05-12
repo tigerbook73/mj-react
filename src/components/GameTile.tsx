@@ -57,7 +57,7 @@ const sizeMap = {
 
 // tile class group
 const clsTile = "bg-gray-200 border border-black rounded-sm shadow-md hover:filter hover:invert";
-const clsTileBack = "bg-gray-800 border border-black rounded-sm shadow-md";
+const clsTileBack = "bg-gray-500 border border-black rounded-sm shadow-md";
 const clsTileSelected = "relative top-[-8px]";
 
 // image class group

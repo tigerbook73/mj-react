@@ -1,15 +1,12 @@
 import { Position } from "@/common/core/mj.game";
-import { Switch } from "@/components/ui/switch";
+import PlayerAreaTopLeft from "@/components/PlayerAreaTopLeft";
 import { CommonUtil, Direction } from "@/lib/direction";
 import { cn } from "@/lib/utils";
 import useMJStore from "@/stores/mj-store";
-import { Label } from "@radix-ui/react-label";
 
 export default function GamePage() {
   const currentPosition = useMJStore((state) => state.currentPosition);
   const currentGame = useMJStore((state) => state.currentGame);
-  const open = useMJStore((state) => state.open);
-  const setOpen = useMJStore((state) => state.setOpen);
 
   const currentDirection = CommonUtil.mapDirection(
     currentPosition ?? Position.None,
@@ -22,10 +19,7 @@ export default function GamePage() {
       <div className="flex-1 flex">
         {/* p-top-left */}
         <div className="flex-1 flex items-center justify-center">
-          <Label className="flex items-center justify-center">
-            <span className="mr-2">明牌</span>
-            <Switch checked={open} onCheckedChange={() => setOpen(!open)} />
-          </Label>
+          <PlayerAreaTopLeft />
         </div>
 
         {/* p-top-center */}

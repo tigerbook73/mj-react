@@ -32,7 +32,7 @@ interface MJStore {
     email: string;
     password: string;
   };
-  setUser: (user: { email?: string; password?: string }) => void;
+  setUser: (user: { email: string; password: string }) => void;
 
   // sign state
   signedIn: boolean;

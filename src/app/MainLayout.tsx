@@ -6,7 +6,6 @@ import { AppSidebar } from "./AppSideBar";
 import { useEffect } from "react";
 import useMJStore, { AppState } from "@/stores/mj-store";
 import { clientApi } from "@/client/client-api";
-import type { GameEvent } from "@/common/protocols/apis.models";
 
 const stateToPath = {
   [AppState.Unconnected]: "/connecting",
@@ -19,12 +18,7 @@ export default function MainLayout() {
   const appState = useMJStore((state) => state.appState);
   const user = useMJStore((state) => state.user);
   const currentRoom = useMJStore((state) => state.currentRoom);
-  const setConnected = useMJStore((state) => state.setConnected);
   const setSignedIn = useMJStore((state) => state.setSignedIn);
-  const setRoomList = useMJStore((state) => state.setRoomList);
-  const setCurrentRoom = useMJStore((state) => state.setCurrentRoom);
-  const setCurrentPosition = useMJStore((state) => state.setCurrentPosition);
-  const setCurrentGame = useMJStore((state) => state.setCurrentGame);
 
   // redirect to the correct page based on app state
   const location = useLocation();
@@ -57,30 +51,6 @@ export default function MainLayout() {
       console.error(e);
     }
   };
-
-  // connection status
-  useEffect(() => {
-    clientApi.gameSocket.onConnect(() => {
-      setConnected(true);
-    });
-    clientApi.gameSocket.onDisconnect(() => {
-      setConnected(false);
-    });
-    // game event
-    const onReceive = (event: GameEvent) => {
-      event = clientApi.parseEvent(event);
-      setRoomList(event.data.rooms);
-      setCurrentRoom(clientApi.findMyRoom(event));
-      setCurrentPosition(clientApi.findMyPlayerModel(event)?.position ?? null);
-      setCurrentGame(clientApi.findMyGame(event));
-    };
-    clientApi.gameSocket.onReceive(onReceive);
-    return () => {
-      clientApi.gameSocket.onConnect(); // remove onConnect
-      clientApi.gameSocket.onDisconnect(); // remove onDisconnect
-      clientApi.gameSocket.offReceive(onReceive); // remove onReceive
-    };
-  }, [setConnected, setRoomList, setCurrentRoom, setCurrentPosition, setCurrentGame]);
 
   return (
     <SidebarProvider defaultOpen={true}>

@@ -53,7 +53,7 @@ export default function MainLayout() {
   };
 
   return (
-    <SidebarProvider defaultOpen={true}>
+    <SidebarProvider defaultOpen={false}>
       <AppSidebar />
 
       <div className="w-full flex flex-col">

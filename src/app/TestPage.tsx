@@ -5,6 +5,8 @@ import { Switch } from "@/components/ui/switch";
 import { Direction } from "@/lib/direction";
 import { useState } from "react";
 
+import { Button as MUIButton } from "@mui/material";
+
 export default function TestPage() {
   const [open, setOpen] = useState(false);
 
@@ -61,6 +63,28 @@ export default function TestPage() {
             />
           ))}
         </div>
+      </div>
+
+      <div>============ MUI Example ============</div>
+      <div className="flex gap-2">
+        <MUIButton variant="contained" color="primary">
+          Primary
+        </MUIButton>
+        <MUIButton variant="contained" color="secondary">
+          Secondary
+        </MUIButton>
+        <MUIButton variant="contained" color="success">
+          Success
+        </MUIButton>
+        <MUIButton variant="contained" color="error">
+          Error
+        </MUIButton>
+        <MUIButton variant="contained" color="info">
+          Info
+        </MUIButton>
+        <MUIButton variant="contained" color="warning">
+          Warning
+        </MUIButton>
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import SignInPage from "./app/SignInPage";
 import NotFound from "./app/NotFound";
 import { Toaster } from "./components/ui/sonner";
 import TestPage from "./app/TestPage";
+import MUITestPage from "./app/MUITestPage";
 
 export function App() {
   return (
@@ -20,6 +21,7 @@ export function App() {
           <Route path="/lobby" element={<LobbyPage />} />
           <Route path="/game" element={<GamePage />} />
           <Route path="/test" element={<TestPage />} />
+          <Route path="/test/mui" element={<MUITestPage />} />
           <Route path="/*" element={<NotFound />} />
         </Route>
       </Routes>

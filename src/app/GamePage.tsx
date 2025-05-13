@@ -7,7 +7,7 @@ import { Direction } from "@/lib/direction";
 
 export default function GamePage() {
   return (
-    <div className="w-[min(100vmin,_calc(100vh-60px))] aspect-square bg-blue-200 flex flex-col">
+    <div className="w-[min(100vmin,_calc(100vh-60px))] aspect-square bg-blue-300 flex flex-col">
       {/* p-top  */}
       <div className="flex-1 flex">
         {/* p-top-left */}

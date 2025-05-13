@@ -101,7 +101,7 @@ export default function GameRoom({ room, className, ...props }: GameRoomProps & 
   }
 
   return (
-    <div className={cn("w-full h-full flex flex-col bg-blue-3 text-center bg-gray-100", className)} {...props}>
+    <div className={cn("w-full h-full flex flex-col bg-blue-3 text-center bg-blue-200", className)} {...props}>
       {/* top */}
       <div className="h-1/4 flex ">
         <div className="flex-1" />

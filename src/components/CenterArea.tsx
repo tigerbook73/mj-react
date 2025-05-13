@@ -14,9 +14,9 @@ const commandMap = {
 };
 
 export default function CenterArea() {
-  const myPosition = useMJStore((state) => state.myPosition ?? Position.None);
+  const myPosition = useMJStore((state) => state.myPosition) ?? Position.None;
   const currentGame = useMJStore((state) => state.currentGame);
-  const playerList = useMJStore((state) => state.myRoom?.players)!;
+  const playerList = useMJStore((state) => state.myRoom?.players) ?? [];
 
   const topPosition = CommonUtil.mapPosition(myPosition, Direction.Top);
   const topLabel = CommonUtil.positionToText(topPosition);

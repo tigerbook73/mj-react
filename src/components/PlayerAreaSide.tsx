@@ -45,11 +45,11 @@ export default function PlayerAreaSide({ direction }: Props) {
   const currentPlayer = currentGame?.current;
 
   // render nothing if
-  if (!currentGame || !thisPlayer || thisPosition === Position.None || !myPosition || !currentPlayer) {
+  if (!currentGame || !thisPlayer || thisPosition === Position.None || myPosition === null || !currentPlayer) {
     return <></>;
   }
 
-  const size = "md";
+  const size = "sm";
 
   const tileIds = [...thisPlayer.handTiles, TileCore.voidId, thisPlayer.picked];
   const handTiles: GameTileProp[] = tileIds.map(
@@ -351,16 +351,18 @@ export default function PlayerAreaSide({ direction }: Props) {
     "flex-col-reverse": direction === Direction.Right,
     "flex-col": direction === Direction.Left,
   };
-  const clsFlexR = {
-    "flex-col": direction === Direction.Bottom || direction === Direction.Top,
-    "flex-row": direction === Direction.Left || direction === Direction.Right,
-  };
 
   return (
-    <div className={cn("size-full flex justify-center items-center", clsFlex)}>
-      <div className={cn("w-20/24 flex justify-between items-center", clsFlex)}>
+    <div
+      className={cn(
+        "size-full p-1 flex justify-center items-center",
+        clsFlex,
+        thisPlayer.position === currentPlayer.position ? "bg-green-500" : "bg-blue-300"
+      )}
+    >
+      <div className={cn("w-20/24 flex justify-between items-center gap-2", clsFlex)}>
         {/* open sets */}
-        <div className={cn(clsFlexR)}>
+        <div className={cn("flex justify-center items-center gap-1", clsFlex)}>
           {openTiles.map((set, index) => (
             <div key={index} className={cn("flex justify-center items-center gap-1", clsFlex)}>
               <div className={cn("flex items-center", clsFlex)}>

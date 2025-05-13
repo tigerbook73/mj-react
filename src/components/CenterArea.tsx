@@ -58,7 +58,7 @@ export default function CenterArea() {
   const LabelAndUser = ({ label, user, className = "" }: { label: string; user: string; className?: string }) => (
     <div className="flex-1 flex justify-center">
       <div className={className}>
-        <div className="p-2 aspect-square bg-yellow-100 rounded">
+        <div className="p-2 aspect-square flex flex-row justify-center items-center bg-yellow-100 rounded">
           <div>{label}</div>
         </div>
         <div className="w-10 flex justify-center overflow-visible">

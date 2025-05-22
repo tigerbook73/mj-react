@@ -10,7 +10,7 @@ export default function MUITestPage() {
         <MUIButton variant="outlined" color="secondary">
           Secondary
         </MUIButton>
-        <MUIButton variant="text" color="error">
+        <MUIButton variant="text" color="error" onClick={() => alert("Clicked!")}>
           Error
         </MUIButton>
       </div>

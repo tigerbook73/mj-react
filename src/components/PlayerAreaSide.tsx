@@ -95,6 +95,11 @@ export default function PlayerAreaSide({ direction }: Props) {
       return;
     }
 
+    // if the tile is not in hand tiles, do nothing
+    if (handTiles.every((tile) => tile.id !== tileId)) {
+      return;
+    }
+
     const index = selectedTiles.indexOf(tileId);
     if (index === -1) {
       setSelectedTiles(() => [tileId]);
@@ -130,7 +135,10 @@ export default function PlayerAreaSide({ direction }: Props) {
 
     // in state my turn
     if (state === State.MyTurn) {
-      setSelected(tileId);
+      // delay unselect to avoid double click
+      setTimeout(() => {
+        setSelected(tileId);
+      }, 100);
       return;
     }
 

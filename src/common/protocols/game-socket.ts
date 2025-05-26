@@ -10,7 +10,7 @@ export class GameSocket {
 
   constructor() {
     // "undefined" means the URL will be computed from the `window.location` object
-    this.socket = io(undefined);
+    this.socket = io(import.meta.env.VITE_WEB_SOCKET_URL || undefined);
 
     this.socket.on("connect", this.onConnected.bind(this));
     this.socket.on("disconnect", this.onDisconnected.bind(this));

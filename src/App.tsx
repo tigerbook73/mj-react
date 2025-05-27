@@ -3,16 +3,16 @@ import MainLayout from "./app/MainLayout";
 import { Toaster } from "./components/ui/sonner";
 import React, { Suspense } from "react";
 
-export function App() {
-  const ConnectingPage = React.lazy(() => import("./app/ConnectingPage"));
-  const LobbyPage = React.lazy(() => import("./app/LobbyPage"));
-  const GamePage = React.lazy(() => import("./app/GamePage"));
-  const SignInPage = React.lazy(() => import("./app/SignInPage"));
-  const NotFound = React.lazy(() => import("./app/NotFound"));
-  const TestPage = React.lazy(() => import("./app/TestPage"));
-  const MUITestPage = React.lazy(() => import("./app/MUITestPage"));
-  const Home = React.lazy(() => import("./app/Home"));
+const ConnectingPage = React.lazy(() => import("./app/ConnectingPage"));
+const LobbyPage = React.lazy(() => import("./app/LobbyPage"));
+const GamePage = React.lazy(() => import("./app/GamePage"));
+const SignInPage = React.lazy(() => import("./app/SignInPage"));
+const NotFound = React.lazy(() => import("./app/NotFound"));
+const TestPage = React.lazy(() => import("./app/TestPage"));
+const MUITestPage = React.lazy(() => import("./app/MUITestPage"));
+const Home = React.lazy(() => import("./app/Home"));
 
+export function App() {
   return (
     <BrowserRouter>
       <Suspense fallback={<div className="flex justify-center items-center h-screen">Loading...</div>}>

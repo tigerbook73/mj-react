@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@radix-ui/react-separator";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, useNavigation } from "react-router-dom";
 import { AppSidebar } from "./AppSideBar";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import useMJStore, { AppState } from "@/stores/mj-store";
 import { clientApi } from "@/client/client-api";
 
@@ -20,9 +20,12 @@ export default function MainLayout() {
   const myRoom = useMJStore((state) => state.myRoom);
   const setSignedIn = useMJStore((state) => state.setSignedIn);
 
-  // redirect to the correct page based on app state
   const location = useLocation();
   const navigate = useNavigate();
+  const navigation = useNavigation();
+  const isLoading = navigation.state === "loading";
+
+  // redirect to the correct page based on app state
   useEffect(() => {
     const path = stateToPath[appState];
     if (location.pathname.startsWith("/test") || location.pathname === path) {
@@ -76,9 +79,18 @@ export default function MainLayout() {
             </Button>
           )}
         </div>
-        <div className="flex flex-1 justify-center items-center">
-          <Outlet />
-        </div>
+        <main className="flex flex-1 justify-center items-center">
+          <Suspense fallback={<div className="flex justify-center items-center mt-2">Loading...</div>}>
+            {isLoading ? (
+              <div className="flex justify-center items-center mt-2 text-blue-900">
+                <p>Page Loading...</p>
+                <div className="ml-2 animate-spin rounded-full h-4 w-4 border-b-2 border-blue-900"></div>
+              </div>
+            ) : (
+              <Outlet />
+            )}
+          </Suspense>
+        </main>
       </div>
     </SidebarProvider>
   );

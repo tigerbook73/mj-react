@@ -11,9 +11,6 @@ const meta = {
     layout: "centered",
   },
   tags: ["autodocs"],
-  argTypes: {
-    tile: {},
-  },
 } satisfies Meta<typeof GameTile>;
 
 export default meta;

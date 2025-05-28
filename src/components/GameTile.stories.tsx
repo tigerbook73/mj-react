@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import GameTile from "../components/GameTile";
 import { Direction } from "@/lib/direction";
 import { TileCore } from "@/common/core/mj.tile-core";
 
 const meta = {
-  title: "Components/GameTile",
   component: GameTile,
+  title: "Components/GameTile",
   parameters: {
     layout: "centered",
   },

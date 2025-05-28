@@ -25,7 +25,7 @@ export default function DiscardAreaSide({ direction }: DiscardAreaProps) {
     TileCore.voidId
   ).map(
     (tileId): GameTileProp => ({
-      id: tileId,
+      tileId: tileId,
       direction,
       size,
       back: false,
@@ -40,7 +40,7 @@ export default function DiscardAreaSide({ direction }: DiscardAreaProps) {
     TileCore.voidId
   ).map(
     (tileId): GameTileProp => ({
-      id: tileId,
+      tileId: tileId,
       direction,
       size,
       back: false,

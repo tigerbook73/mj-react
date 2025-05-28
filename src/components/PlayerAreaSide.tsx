@@ -54,7 +54,7 @@ export default function PlayerAreaSide({ direction }: Props) {
   const tileIds = [...thisPlayer.handTiles, TileCore.voidId, thisPlayer.picked];
   const handTiles: GameTileProp[] = tileIds.map(
     (id): GameTileProp => ({
-      id,
+      tileId: id,
       direction: direction,
       size,
       back: myPosition !== thisPlayer.position && !open,
@@ -65,7 +65,7 @@ export default function PlayerAreaSide({ direction }: Props) {
   const openTiles = thisPlayer.openedSets.map((set) =>
     set.tiles.map(
       (tile): GameTileProp => ({
-        id: tile,
+        tileId: tile,
         direction: direction,
         size,
         back: false,
@@ -96,7 +96,7 @@ export default function PlayerAreaSide({ direction }: Props) {
     }
 
     // if the tile is not in hand tiles, do nothing
-    if (handTiles.every((tile) => tile.id !== tileId)) {
+    if (handTiles.every((tile) => tile.tileId !== tileId)) {
       return;
     }
 
@@ -388,8 +388,8 @@ export default function PlayerAreaSide({ direction }: Props) {
             <GameTile
               key={index}
               tile={tile}
-              onClick={() => handleClick(tile.id)}
-              onDoubleClick={() => handleDblClick(tile.id)}
+              onClick={() => handleClick(tile.tileId)}
+              onDoubleClick={() => handleDblClick(tile.tileId)}
             />
           ))}
         </div>

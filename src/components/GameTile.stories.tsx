@@ -26,7 +26,7 @@ export const Default: Story = {
           TileCore.allTiles
             .filter((_, index) => index % 4 === 0)
             .map((tile) => (
-              <GameTile key={tile.id} {...args} tile={{ ...args.tile, id: tile.id, size: "lg" }} />
+              <GameTile key={tile.id} {...args} tile={{ ...args.tile, tileId: tile.id, size: "lg" }} />
             ))
         }
       </div>
@@ -34,7 +34,7 @@ export const Default: Story = {
         {
           // Display the tile with the back side
           [false, true].map((back, index) => (
-            <GameTile key={index} {...args} tile={{ ...args.tile, id: args.tile.id + index * 4, back }} />
+            <GameTile key={index} {...args} tile={{ ...args.tile, tileId: args.tile.tileId + index * 4, back }} />
           ))
         }
       </div>
@@ -42,7 +42,11 @@ export const Default: Story = {
         {
           // Display the tile with the back side
           [Direction.Bottom, Direction.Top, Direction.Left, Direction.Right].map((direction, index) => (
-            <GameTile key={direction} {...args} tile={{ ...args.tile, id: args.tile.id + index * 4, direction }} />
+            <GameTile
+              key={direction}
+              {...args}
+              tile={{ ...args.tile, tileId: args.tile.tileId + index * 4, direction }}
+            />
           ))
         }
       </div>
@@ -52,7 +56,7 @@ export const Default: Story = {
           ["xs", "sm", "md", "lg", "xl"].map((size, index) => (
             <div key={size} className="flex flex-col items-center">
               <div>{size}</div>
-              <GameTile {...args} tile={{ ...args.tile, id: args.tile.id + index * 4, size: size as any }} />
+              <GameTile {...args} tile={{ ...args.tile, tileId: args.tile.tileId + index * 4, size: size as any }} />
             </div>
           ))
         }
@@ -63,7 +67,7 @@ export const Default: Story = {
           Array.from({ length: 9 }, (_, i) => i + 1).map((size, index) => (
             <div key={size} className="flex flex-col items-center">
               <div>{size}</div>
-              <GameTile {...args} tile={{ ...args.tile, id: args.tile.id + index * 4, size: size as any }} />
+              <GameTile {...args} tile={{ ...args.tile, tileId: args.tile.tileId + index * 4, size: size as any }} />
             </div>
           ))
         }
@@ -72,7 +76,7 @@ export const Default: Story = {
   ),
   args: {
     tile: {
-      id: 1,
+      tileId: 1,
       back: false,
       selected: false,
       size: "xl",
@@ -84,7 +88,7 @@ export const Default: Story = {
 export const Standard: Story = {
   args: {
     tile: {
-      id: 1,
+      tileId: 1,
       back: false,
       selected: false,
       size: 5,

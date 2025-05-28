@@ -22,7 +22,7 @@ export default function WallAreaSide({ direction }: WallAreaProps) {
       .filter((_, i) => i % 2 === remainder)
       .map(
         (tileId): GameTileProp => ({
-          id: tileId,
+          tileId: tileId,
           direction,
           size,
           back: !open,
@@ -37,7 +37,7 @@ export default function WallAreaSide({ direction }: WallAreaProps) {
       .filter((_, i) => i % 2 === remainder)
       .map(
         (tileId): GameTileProp => ({
-          id: tileId,
+          tileId: tileId,
           direction,
           size,
           back: !open,

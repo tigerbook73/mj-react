@@ -3,7 +3,7 @@ import { Direction } from "@/lib/direction";
 import { cn } from "@/lib/utils";
 
 export interface GameTileProp {
-  id: TileId;
+  tileId: TileId;
   direction: Direction;
   size?: "xs" | "sm" | "md" | "lg" | "xl" | number;
   back?: boolean;
@@ -67,17 +67,17 @@ const clsImageLeft = "transform rotate-90";
 const clsImageRight = "transform rotate-[-90deg]";
 
 export default function GameTile({ tile, ...props }: { tile: GameTileProp } & React.ComponentProps<"div">) {
-  const name = TileCore.fromId(tile.id).name;
+  const name = TileCore.fromId(tile.tileId).name;
   const imgSrc = imageNames[name] ? `/svgs/Regular/${imageNames[name]}` : "/svgs/Black/Blank.svg";
-  const showImage = tile.id !== TileCore.voidId && !tile.back;
+  const showImage = tile.tileId !== TileCore.voidId && !tile.back;
   const size = typeof tile.size === "number" ? tile.size : sizeMap[tile.size || "md"];
   const width = `${size}vmin`;
   const height = `${(size * 4) / 3}vmin`;
 
   const tileClass = cn(
     "flex justify-center items-center",
-    tile.id !== TileCore.voidId && !tile.back && clsTile,
-    tile.id !== TileCore.voidId && tile.back && clsTileBack,
+    tile.tileId !== TileCore.voidId && !tile.back && clsTile,
+    tile.tileId !== TileCore.voidId && tile.back && clsTileBack,
     tile.selected && clsTileSelected
   );
 

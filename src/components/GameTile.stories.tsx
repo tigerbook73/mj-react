@@ -21,52 +21,53 @@ export const Default: Story = {
   render: (args) => (
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap gap-1 justify-left">
-        {
-          // Display the tile with the back side
-          TileCore.allTiles
-            .filter((_, index) => index % 4 === 0)
-            .map((tile) => (
-              <GameTile key={tile.id} {...args} tileId={tile.id} size="lg" />
-            ))
-        }
+        {/* display all tiles */}
+        {TileCore.allTiles
+          .filter((_, index) => index % 4 === 0)
+          .map((tile) => (
+            <GameTile key={tile.id} {...args} tileId={tile.id} size="lg" />
+          ))}
       </div>
       <div className="flex flex-wrap gap-4 justify-left">
-        {
-          // Display the tile with the back side
-          [false, true].map((back, index) => (
-            <GameTile key={index} {...args} tileId={args.tileId + index * 4} back={back} />
-          ))
-        }
+        {/* display front and back tiles */}
+        {[false, true].map((selected, index) => (
+          <div key={index} className="flex flex-col items-center">
+            <div className="mb-3">{selected ? "selected" : "unselected"}</div>
+            <GameTile key={index} {...args} selected={selected} />
+          </div>
+        ))}
       </div>
       <div className="flex flex-wrap gap-4 justify-left">
-        {
-          // Display the tile with the back side
-          [Direction.Bottom, Direction.Top, Direction.Left, Direction.Right].map((direction, index) => (
+        {[false, true].map((back, index) => (
+          <div key={index} className="flex flex-col items-center">
+            <div>{back ? "Back" : "Front"}</div>
+            <GameTile key={index} {...args} back={back} />
+          </div>
+        ))}
+      </div>
+      <div className="flex flex-wrap gap-4 justify-left">
+        {[Direction.Bottom, Direction.Top, Direction.Left, Direction.Right].map((direction, index) => (
+          <div key={direction} className="flex flex-col items-center">
+            <div>{direction}</div>
             <GameTile key={direction} {...args} tileId={args.tileId + index * 4} direction={direction} />
-          ))
-        }
+          </div>
+        ))}
       </div>
       <div className="flex flex-wrap gap-4 justify-left">
-        {
-          // Display different sizes of the GameTile
-          ["xs", "sm", "md", "lg", "xl"].map((size, index) => (
-            <div key={size} className="flex flex-col items-center">
-              <div>{size}</div>
-              <GameTile {...args} tileId={args.tileId + index * 4} size={size as any} />
-            </div>
-          ))
-        }
+        {["xs", "sm", "md", "lg", "xl"].map((size, index) => (
+          <div key={size} className="flex flex-col items-center">
+            <div>{size}</div>
+            <GameTile {...args} tileId={args.tileId + index * 4} size={size as any} />
+          </div>
+        ))}
       </div>
       <div className="flex flex-wrap gap-4 justify-left">
-        {
-          // Display different sizes of the GameTile
-          Array.from({ length: 9 }, (_, i) => i + 1).map((size, index) => (
-            <div key={size} className="flex flex-col items-center">
-              <div>{size}</div>
-              <GameTile {...args} tileId={args.tileId + index * 4} size={size as any} />
-            </div>
-          ))
-        }
+        {Array.from({ length: 9 }, (_, i) => i + 1).map((size, index) => (
+          <div key={size} className="flex flex-col items-center">
+            <div>{size}</div>
+            <GameTile {...args} tileId={args.tileId + index * 4} size={size as any} />
+          </div>
+        ))}
       </div>
     </div>
   ),

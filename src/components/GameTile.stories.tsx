@@ -11,13 +11,54 @@ const meta = {
     layout: "centered",
   },
   tags: ["autodocs"],
+  argTypes: {
+    tileId: {
+      control: {
+        type: "select",
+        labels: TileCore.allTiles
+          .filter((_, i) => !(i % 4))
+          .reduce((acc, tile) => {
+            acc[tile.id] = tile.name;
+            return acc;
+          }, {} as Record<number, string>),
+      },
+      options: TileCore.allTiles.filter((_, i) => !(i % 4)).map((tile) => tile.id),
+    },
+    direction: {
+      control: { type: "select" },
+      options: Object.values(Direction),
+    },
+    size: {
+      control: { type: "select" },
+      options: ["xs", "sm", "md", "lg", "xl", 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    },
+    back: {
+      control: { type: "boolean" },
+    },
+    selected: {
+      control: { type: "boolean" },
+    },
+  },
+  args: {
+    tileId: 1,
+    back: false,
+    selected: false,
+    size: 9,
+    direction: Direction.Bottom,
+  },
 } satisfies Meta<typeof GameTile>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Standard: Story = {
+  args: {
+    ...meta.args,
+  },
+};
+
+export const Multiple: Story = {
   render: (args) => (
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap gap-1 justify-left">
@@ -72,20 +113,7 @@ export const Default: Story = {
     </div>
   ),
   args: {
-    tileId: 1,
-    back: false,
-    selected: false,
-    size: "xl",
-    direction: Direction.Bottom,
-  },
-};
-
-export const Standard: Story = {
-  args: {
-    tileId: 1,
-    back: false,
-    selected: false,
-    size: 5,
-    direction: Direction.Bottom,
+    ...meta.args,
+    size: "lg",
   },
 };

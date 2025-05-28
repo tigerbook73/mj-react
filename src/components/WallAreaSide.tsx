@@ -62,7 +62,7 @@ export default function WallAreaSide({ direction }: WallAreaProps) {
         })}
       >
         {firstRow.map((tile, index) => (
-          <GameTile key={index} tile={tile} />
+          <GameTile key={index} {...tile} />
         ))}
       </div>
       <div
@@ -74,7 +74,7 @@ export default function WallAreaSide({ direction }: WallAreaProps) {
         })}
       >
         {secondRow.map((tile, index) => (
-          <GameTile key={index} tile={tile} />
+          <GameTile key={index} {...tile} />
         ))}
       </div>
     </div>

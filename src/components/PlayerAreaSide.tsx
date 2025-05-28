@@ -375,7 +375,7 @@ export default function PlayerAreaSide({ direction }: Props) {
             <div key={index} className={cn("flex justify-center items-center gap-1", clsFlex)}>
               <div className={cn("flex items-center", clsFlex)}>
                 {set.map((tile, index) => (
-                  <GameTile key={index} tile={tile} />
+                  <GameTile key={index} {...tile} />
                 ))}
               </div>
             </div>
@@ -387,7 +387,7 @@ export default function PlayerAreaSide({ direction }: Props) {
           {handTiles.map((tile, index) => (
             <GameTile
               key={index}
-              tile={tile}
+              {...tile}
               onClick={() => handleClick(tile.tileId)}
               onDoubleClick={() => handleDblClick(tile.tileId)}
             />

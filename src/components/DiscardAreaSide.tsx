@@ -64,7 +64,7 @@ export default function DiscardAreaSide({ direction }: DiscardAreaProps) {
         })}
       >
         {firstRow.map((tile, index) => (
-          <GameTile key={index} tile={tile} />
+          <GameTile key={index} {...tile} />
         ))}
       </div>
       <div
@@ -76,7 +76,7 @@ export default function DiscardAreaSide({ direction }: DiscardAreaProps) {
         })}
       >
         {secondRow.map((tile, index) => (
-          <GameTile key={index} tile={tile} />
+          <GameTile key={index} {...tile} />
         ))}
       </div>
     </div>

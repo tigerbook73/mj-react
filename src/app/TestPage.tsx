@@ -15,33 +15,33 @@ export default function TestPage() {
       <div>Test Page</div>
       <div className="flex flex-col gap-2">
         <div className="flex gap-2">
-          <GameTile tile={{ tileId: 10, back: false, selected: false, size: "md", direction: Direction.Bottom }} />
-          <GameTile tile={{ tileId: 10, back: false, selected: false, size: "md", direction: Direction.Top }} />
-          <GameTile tile={{ tileId: 10, back: false, selected: false, size: "md", direction: Direction.Left }} />
-          <GameTile tile={{ tileId: 10, back: false, selected: false, size: "md", direction: Direction.Right }} />
+          <GameTile {...{ tileId: 10, back: false, selected: false, size: "md", direction: Direction.Bottom }} />
+          <GameTile {...{ tileId: 10, back: false, selected: false, size: "md", direction: Direction.Top }} />
+          <GameTile {...{ tileId: 10, back: false, selected: false, size: "md", direction: Direction.Left }} />
+          <GameTile {...{ tileId: 10, back: false, selected: false, size: "md", direction: Direction.Right }} />
 
-          <GameTile tile={{ tileId: 20, back: false, selected: false, size: "md", direction: Direction.Bottom }} />
-          <GameTile tile={{ tileId: 20, back: true, selected: false, size: "md", direction: Direction.Bottom }} />
+          <GameTile {...{ tileId: 20, back: false, selected: false, size: "md", direction: Direction.Bottom }} />
+          <GameTile {...{ tileId: 20, back: true, selected: false, size: "md", direction: Direction.Bottom }} />
 
-          <GameTile tile={{ tileId: 30, back: false, selected: false, size: "md", direction: Direction.Bottom }} />
-          <GameTile tile={{ tileId: 30, back: false, selected: true, size: "md", direction: Direction.Bottom }} />
+          <GameTile {...{ tileId: 30, back: false, selected: false, size: "md", direction: Direction.Bottom }} />
+          <GameTile {...{ tileId: 30, back: false, selected: true, size: "md", direction: Direction.Bottom }} />
 
-          <GameTile tile={{ tileId: 40, back: false, selected: false, size: "xs", direction: Direction.Top }} />
-          <GameTile tile={{ tileId: 40, back: false, selected: false, size: "sm", direction: Direction.Top }} />
-          <GameTile tile={{ tileId: 40, back: false, selected: false, size: "md", direction: Direction.Top }} />
-          <GameTile tile={{ tileId: 40, back: false, selected: false, size: "lg", direction: Direction.Top }} />
-          <GameTile tile={{ tileId: 40, back: false, selected: false, size: "xl", direction: Direction.Top }} />
+          <GameTile {...{ tileId: 40, back: false, selected: false, size: "xs", direction: Direction.Top }} />
+          <GameTile {...{ tileId: 40, back: false, selected: false, size: "sm", direction: Direction.Top }} />
+          <GameTile {...{ tileId: 40, back: false, selected: false, size: "md", direction: Direction.Top }} />
+          <GameTile {...{ tileId: 40, back: false, selected: false, size: "lg", direction: Direction.Top }} />
+          <GameTile {...{ tileId: 40, back: false, selected: false, size: "xl", direction: Direction.Top }} />
 
-          <GameTile tile={{ tileId: 50, back: false, selected: false, size: 1, direction: Direction.Top }} />
-          <GameTile tile={{ tileId: 50, back: false, selected: false, size: 2, direction: Direction.Top }} />
-          <GameTile tile={{ tileId: 50, back: false, selected: false, size: 3, direction: Direction.Top }} />
-          <GameTile tile={{ tileId: 50, back: false, selected: false, size: 4, direction: Direction.Top }} />
-          <GameTile tile={{ tileId: 50, back: false, selected: false, size: 5, direction: Direction.Top }} />
-          <GameTile tile={{ tileId: 50, back: false, selected: false, size: 6, direction: Direction.Top }} />
-          <GameTile tile={{ tileId: 50, back: false, selected: false, size: 7, direction: Direction.Top }} />
-          <GameTile tile={{ tileId: 50, back: false, selected: false, size: 8, direction: Direction.Top }} />
-          <GameTile tile={{ tileId: 50, back: false, selected: false, size: 9, direction: Direction.Top }} />
-          <GameTile tile={{ tileId: 50, back: false, selected: false, size: 10, direction: Direction.Top }} />
+          <GameTile {...{ tileId: 50, back: false, selected: false, size: 1, direction: Direction.Top }} />
+          <GameTile {...{ tileId: 50, back: false, selected: false, size: 2, direction: Direction.Top }} />
+          <GameTile {...{ tileId: 50, back: false, selected: false, size: 3, direction: Direction.Top }} />
+          <GameTile {...{ tileId: 50, back: false, selected: false, size: 4, direction: Direction.Top }} />
+          <GameTile {...{ tileId: 50, back: false, selected: false, size: 5, direction: Direction.Top }} />
+          <GameTile {...{ tileId: 50, back: false, selected: false, size: 6, direction: Direction.Top }} />
+          <GameTile {...{ tileId: 50, back: false, selected: false, size: 7, direction: Direction.Top }} />
+          <GameTile {...{ tileId: 50, back: false, selected: false, size: 8, direction: Direction.Top }} />
+          <GameTile {...{ tileId: 50, back: false, selected: false, size: 9, direction: Direction.Top }} />
+          <GameTile {...{ tileId: 50, back: false, selected: false, size: 10, direction: Direction.Top }} />
         </div>
         <div className="my-4">
           <Label>
@@ -53,7 +53,7 @@ export default function TestPage() {
           {TileCore.allTiles.map((tile) => (
             <GameTile
               key={tile.id}
-              tile={{
+              {...{
                 tileId: tile.id,
                 back: open,
                 selected: false,

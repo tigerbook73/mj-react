@@ -66,32 +66,39 @@ const clsImageBottom = "transform rotate-0";
 const clsImageLeft = "transform rotate-90";
 const clsImageRight = "transform rotate-[-90deg]";
 
-export default function GameTile({ tile, ...props }: { tile: GameTileProp } & React.ComponentProps<"div">) {
-  const name = TileCore.fromId(tile.tileId).name;
+export default function GameTile({
+  tileId,
+  direction = Direction.Bottom,
+  size = "md",
+  back = false,
+  selected = false,
+  ...props
+}: GameTileProp & React.ComponentProps<"div">) {
+  const name = TileCore.fromId(tileId).name;
   const imgSrc = imageNames[name] ? `/svgs/Regular/${imageNames[name]}` : "/svgs/Black/Blank.svg";
-  const showImage = tile.tileId !== TileCore.voidId && !tile.back;
-  const size = typeof tile.size === "number" ? tile.size : sizeMap[tile.size || "md"];
-  const width = `${size}vmin`;
-  const height = `${(size * 4) / 3}vmin`;
+  const showImage = tileId !== TileCore.voidId && !back;
+  const tileSize = typeof size === "number" ? size : sizeMap[size || "md"];
+  const width = `${tileSize}vmin`;
+  const height = `${(tileSize * 4) / 3}vmin`;
 
   const tileClass = cn(
     "flex justify-center items-center",
-    tile.tileId !== TileCore.voidId && !tile.back && clsTile,
-    tile.tileId !== TileCore.voidId && tile.back && clsTileBack,
-    tile.selected && clsTileSelected
+    tileId !== TileCore.voidId && !back && clsTile,
+    tileId !== TileCore.voidId && back && clsTileBack,
+    selected && clsTileSelected
   );
 
   const tileStyle = {
-    width: tile.direction === Direction.Top || tile.direction === Direction.Bottom ? width : height,
-    height: tile.direction === Direction.Top || tile.direction === Direction.Bottom ? height : width,
+    width: direction === Direction.Top || direction === Direction.Bottom ? width : height,
+    height: direction === Direction.Top || direction === Direction.Bottom ? height : width,
   };
 
   const imageClass = cn(
     "size-90/100",
-    tile.direction === Direction.Top && clsImageTop,
-    tile.direction === Direction.Bottom && clsImageBottom,
-    tile.direction === Direction.Left && clsImageLeft,
-    tile.direction === Direction.Right && clsImageRight
+    direction === Direction.Top && clsImageTop,
+    direction === Direction.Bottom && clsImageBottom,
+    direction === Direction.Left && clsImageLeft,
+    direction === Direction.Right && clsImageRight
   );
 
   return (

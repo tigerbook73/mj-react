@@ -94,7 +94,7 @@ export class Player {
 export const enum GameState {
   Init = "init", // 初始
   Dispatching = "dispatching", // 发牌中，后续可以拆分成更小的状态
-  WaitingAction = "wating_action", // 等待玩家操作: 胡/暗杠/打牌
+  WaitingAction = "waiting_action", // 等待玩家操作: 胡/暗杠/打牌
   WaitingPass = "waiting-pass", // 等待玩家按顺序操作: 过/碰/杠/吃/胡, 在这个状态下，下一个玩家还没有确定，current还是打出牌的玩家
   // 顺序：
   // 判断是否有人碰/胡/杠/吃

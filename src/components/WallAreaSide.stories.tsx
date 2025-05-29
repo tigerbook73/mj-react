@@ -6,8 +6,8 @@ import useMJStore, { AppState } from "@/stores/mj-store";
 import { Game, Position } from "@/common/core/mj.game";
 
 const meta = {
-  component: WallAreaSide,
   title: "Components/WallAreaSide",
+  component: WallAreaSide,
   parameters: {
     layout: "centered",
   },

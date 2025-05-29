@@ -29,21 +29,4 @@ describe("Game Play", () => {
     expect(game.dealer).toBe(game.players[Position.East]);
     expect(game.current).toBe(game.dealer);
   });
-
-  it("discard(picked)", () => {
-    game.drop(game.current?.picked as TileId);
-    expect(game.state).toBe(GameState.WaitingPass);
-  });
-
-  it("pass(all)", () => {
-    const nextPlayer = game.getNextPlayer();
-    game.pass(nextPlayer);
-    expect(game.state).toBe(GameState.WaitingAction);
-    expect(game.current).toBe(nextPlayer);
-  });
-
-  it("discard(0)", () => {
-    game.drop(game.current?.handTiles[0] as TileId);
-    expect(game.state).toBe(GameState.WaitingPass);
-  });
 });

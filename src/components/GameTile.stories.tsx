@@ -25,8 +25,16 @@ const meta = {
       options: TileCore.allTiles.filter((_, i) => !(i % 4)).map((tile) => tile.id),
     },
     direction: {
-      control: { type: "select" },
-      options: Object.values(Direction),
+      control: {
+        type: "select",
+        labels: {
+          [Direction.Top]: "Top",
+          [Direction.Bottom]: "Bottom",
+          [Direction.Left]: "Left",
+          [Direction.Right]: "Right",
+        },
+      },
+      options: [Direction.Top, Direction.Bottom, Direction.Left, Direction.Right],
     },
     size: {
       control: { type: "select" },
@@ -40,7 +48,7 @@ const meta = {
     },
   },
   args: {
-    tileId: 1,
+    tileId: 0,
     back: false,
     selected: false,
     size: 9,

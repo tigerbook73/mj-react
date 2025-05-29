@@ -4,7 +4,6 @@ import WallAreaSide from "./WallAreaSide";
 import { Direction } from "@/lib/direction";
 import useMJStore, { AppState } from "@/stores/mj-store";
 import { Game, Position } from "@/common/core/mj.game";
-import { useState } from "react";
 
 const meta = {
   component: WallAreaSide,
@@ -49,7 +48,7 @@ const meta = {
           [Direction.Right]: "Right",
         },
       },
-      options: Object.values(Direction),
+      options: [Direction.Top, Direction.Bottom, Direction.Left, Direction.Right],
     },
   },
 } satisfies Meta<typeof WallAreaSide>;

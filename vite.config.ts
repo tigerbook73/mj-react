@@ -4,12 +4,25 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
+// import aliases for test and storybook environments
+const isTest = process.env.NODE_ENV === "test";
+const isStorybook = process.env.STORYBOOK === "true";
+const testAliases: Record<string, string> =
+  isTest || isStorybook
+    ? {
+        "socket.io-client": path.resolve(__dirname, "./src/stories/__mocks__/socket.io-client.ts"),
+      }
+    : {};
+
+console.log("Vite config: isTest =", isTest, ", isStorybook =", isStorybook);
+
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      ...testAliases,
     },
   },
   server: {

@@ -54,6 +54,9 @@ interface MJStore {
   // open
   open: boolean;
   setOpen: (open: boolean) => void;
+
+  // reset state
+  reset?: () => void;
 }
 
 const storeCreator: StateCreator<MJStore> = (set: any) => {
@@ -136,6 +139,18 @@ const storeCreator: StateCreator<MJStore> = (set: any) => {
     });
   };
 
+  const reset = () => {
+    set((state: MJStore) => {
+      state.appState = AppState.Unconnected;
+      state.connected = false;
+      state.user = { email: "", password: "" };
+      state.roomList = [];
+      state.myRoom = null;
+      state.myPosition = null;
+      state.currentGame = null;
+    });
+  };
+
   return {
     // app state
     appState: AppState.Unconnected,
@@ -170,6 +185,9 @@ const storeCreator: StateCreator<MJStore> = (set: any) => {
     // open
     open: false,
     setOpen,
+
+    // reset state
+    reset,
   };
 };
 

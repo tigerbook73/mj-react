@@ -1,4 +1,4 @@
-name: Deploy to Render on main branch push!
+name: Deploy to Render on main branch push
 
 on:
   push:
@@ -10,8 +10,5 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: "Debug: show deploy URL"
-        run: echo "Deploy URL is ${{ secrets.RENDER_DEPLOY_URL }}"
-
-      - name: Trigger Render deployment (verbose curl)
-        run: curl -v -X GET "${{ secrets.RENDER_DEPLOY_URL }}"
+      - name: Send GET request to Render
+        run: curl -X GET "${{ secrets.RENDER_DEPLOY_URL }}"

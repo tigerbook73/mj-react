@@ -1,9 +1,14 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import { Toaster } from "./components/ui/sonner";
 import MainLayout from "./app/MainLayout";
 
 const router = createBrowserRouter([
   {
+    path: "/",
+    element: <Navigate to="/react" replace />,
+  },
+  {
+    path: "/react",
     Component: MainLayout,
     children: [
       { index: true, lazy: async () => ({ Component: (await import("./app/Home")).default }) },

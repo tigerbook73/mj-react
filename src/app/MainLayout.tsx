@@ -31,7 +31,7 @@ export default function MainLayout() {
     if (location.pathname.startsWith("/test") || location.pathname === path) {
       return;
     }
-    navigate(path);
+    navigate("/react" + path);
   }, [appState, location.pathname, navigate]);
 
   const handleSignOut = async () => {

@@ -18,6 +18,7 @@ console.log("Vite config: isTest =", isTest, ", isStorybook =", isStorybook);
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
+  base: "/react/",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {

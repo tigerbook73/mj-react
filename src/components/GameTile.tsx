@@ -75,7 +75,9 @@ export default function GameTile({
   ...props
 }: GameTileProp & React.ComponentProps<"div">) {
   const name = TileCore.fromId(tileId).name;
-  const imgSrc = imageNames[name] ? `/svgs/Regular/${imageNames[name]}` : "/svgs/Black/Blank.svg";
+  const imgSrc = imageNames[name]
+    ? `${import.meta.env.BASE_URL}svgs/Regular/${imageNames[name]}`
+    : `${import.meta.env.BASE_URL}svgs/Black/Blank.svg`;
   const showImage = tileId !== TileCore.voidId && !back;
   const tileSize = typeof size === "number" ? size : sizeMap[size || "md"];
   const width = `${tileSize}vmin`;
@@ -94,7 +96,7 @@ export default function GameTile({
   };
 
   const imageClass = cn(
-    "size-90/100",
+    "size-10/9",
     direction === Direction.Top && clsImageTop,
     direction === Direction.Bottom && clsImageBottom,
     direction === Direction.Left && clsImageLeft,

@@ -49,7 +49,7 @@ export default function PlayerAreaSide({ direction }: Props) {
     return <></>;
   }
 
-  const size = "sm";
+  const size = "md";
 
   const tileIds = [...thisPlayer.handTiles, TileCore.voidId, thisPlayer.picked];
   const handTiles: GameTileProp[] = tileIds.map(

@@ -8,7 +8,7 @@ const router = createBrowserRouter([
     element: <Navigate to="/react" replace />,
   },
   {
-    path: "/react",
+    path: import.meta.env.BASE_URL,
     Component: MainLayout,
     children: [
       { index: true, lazy: async () => ({ Component: (await import("./app/Home")).default }) },

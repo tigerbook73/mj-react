@@ -1,10 +1,9 @@
 import { cn } from "@/lib/utils";
 import { Position } from "@/common/core/mj.game";
 import type { SeatModelInStore } from "@/stores/mj-store";
+import React from "react";
 
-export interface GameSeatProp {
-  seat: SeatModelInStore;
-}
+export type GameSeatProp = SeatModelInStore;
 
 const positionMap = {
   [Position.East]: "東",
@@ -14,12 +13,17 @@ const positionMap = {
   [Position.None]: "",
 };
 
-export default function GameSeat({ seat, className, ...props }: GameSeatProp & React.ComponentProps<"div">) {
-  const positionName = positionMap[seat.position];
+export default React.memo(function GameSeat({
+  position,
+  userName,
+  className,
+  ...props
+}: GameSeatProp & React.ComponentProps<"div">) {
+  const positionName = positionMap[position];
   return (
-    <div className={cn("h-full w-full flex flex-col justify-center items-center bg-red-100", className)} {...props}>
+    <div className={cn("h-full w-full flex flex-col justify-center items-center bg-blue-100", className)} {...props}>
       <div className="m-2 px-2 py-1 rounded-md shadow-md bg-yellow-400">{positionName}</div>
-      <div className="m-2">{seat.userName}</div>
+      <div className="m-2">{userName}</div>
     </div>
   );
-}
+});

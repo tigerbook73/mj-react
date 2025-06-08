@@ -7,39 +7,43 @@ import { PlayerRole, UserType } from "@/common/models/common.types";
 import { RoomStatus } from "@/common/models/room.model";
 import { clientApi } from "@/client/client-api";
 import { toast } from "sonner";
+import React from "react";
 
 interface GameRoomProps {
   room: RoomModelInStore;
   className?: string;
 }
 
-export default function GameRoom({ room, className, ...props }: GameRoomProps & React.ComponentProps<"div">) {
+const nonPlayer = {
+  userName: "",
+  roomName: "",
+  role: PlayerRole.Player,
+  type: UserType.Human,
+  position: Position.East,
+};
+
+const findPlayerByPosition = (room: RoomModelInStore, position: Position): SeatModelInStore => {
+  return (
+    room.players.find((player) => player.position === position) || {
+      ...nonPlayer,
+      roomName: room.name,
+      position: position,
+    }
+  );
+};
+
+export default React.memo(function GameRoom({
+  room,
+  className,
+  ...props
+}: GameRoomProps & React.ComponentProps<"div">) {
   const myRoom = useMJStore((state) => state.myRoom);
   const myPosition = useMJStore((state) => state.myPosition);
 
-  const nonPlayer = {
-    userName: "",
-    roomName: room.name,
-    role: PlayerRole.Player,
-    type: UserType.Human,
-    position: Position.East,
-  };
-  const southPlayer = room.players.find((player) => player.position === Position.South) || {
-    ...nonPlayer,
-    position: Position.South,
-  };
-  const eastPlayer = room.players.find((player) => player.position === Position.East) || {
-    ...nonPlayer,
-    position: Position.East,
-  };
-  const westPlayer = room.players.find((player) => player.position === Position.West) || {
-    ...nonPlayer,
-    position: Position.West,
-  };
-  const northPlayer = room.players.find((player) => player.position === Position.North) || {
-    ...nonPlayer,
-    position: Position.North,
-  };
+  const southPlayer = findPlayerByPosition(room, Position.South);
+  const eastPlayer = findPlayerByPosition(room, Position.East);
+  const westPlayer = findPlayerByPosition(room, Position.West);
+  const northPlayer = findPlayerByPosition(room, Position.North);
 
   async function handlePlayerClick(seat: SeatModelInStore) {
     if (room.state !== RoomStatus.Open) {
@@ -106,7 +110,7 @@ export default function GameRoom({ room, className, ...props }: GameRoomProps & 
       <div className="h-1/4 flex ">
         <div className="flex-1" />
         <div className="w-2/4" onDoubleClick={() => handlePlayerClick(northPlayer)}>
-          <GameSeat seat={northPlayer} />
+          <GameSeat {...northPlayer} />
         </div>
         <div className="flex-1" />
       </div>
@@ -115,7 +119,7 @@ export default function GameRoom({ room, className, ...props }: GameRoomProps & 
       <div className="h-2/4 flex ">
         {/* <!-- left --> */}
         <div className="w-1/4" onDoubleClick={() => handlePlayerClick(westPlayer)}>
-          <GameSeat seat={westPlayer} />
+          <GameSeat {...westPlayer} />
         </div>
 
         {/* <!-- center --> */}
@@ -126,7 +130,7 @@ export default function GameRoom({ room, className, ...props }: GameRoomProps & 
 
         {/* <!-- right --> */}
         <div className="w-1/4" onDoubleClick={() => handlePlayerClick(eastPlayer)}>
-          <GameSeat seat={eastPlayer} />
+          <GameSeat {...eastPlayer} />
         </div>
       </div>
 
@@ -134,10 +138,10 @@ export default function GameRoom({ room, className, ...props }: GameRoomProps & 
       <div className="h-1/4 flex ">
         <div className="flex-1" />
         <div className="w-2/4" onDoubleClick={() => handlePlayerClick(southPlayer)}>
-          <GameSeat seat={southPlayer} />
+          <GameSeat {...southPlayer} />
         </div>
         <div className="flex-1" />
       </div>
     </div>
   );
-}
+});

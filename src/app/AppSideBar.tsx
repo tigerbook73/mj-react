@@ -16,32 +16,32 @@ import { Link } from "react-router-dom";
 const items = [
   {
     title: "Home",
-    url: "/",
+    url: "/react/",
     icon: Home,
   },
   {
     title: "Connecting",
-    url: "/connecting",
+    url: "/react/connecting",
     icon: MonitorUp,
   },
   {
     title: "Sign In",
-    url: "/sign-in",
+    url: "/react/sign-in",
     icon: LogIn,
   },
   {
     title: "Lobby",
-    url: "/lobby",
+    url: "/react/lobby",
     icon: School,
   },
   {
     title: "Game",
-    url: "/game",
+    url: "/react/game",
     icon: Dice5,
   },
   {
     title: "Test",
-    url: "/test",
+    url: "/react/test",
     icon: TestTube2,
   },
 ];

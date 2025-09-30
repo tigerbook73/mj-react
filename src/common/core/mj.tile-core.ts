@@ -4,6 +4,18 @@
 
 export type TileId = number;
 
+/**
+ * 动作类型
+ */
+export const enum ActionType {
+  Peng = "peng",
+  Chi = "chi",
+  Gang = "gang",
+  Angang = "angang",
+  Hu = "hu",
+  Pass = "pass",
+}
+
 export const enum TileType {
   WAN = "万",
   TONG = "筒",
@@ -272,14 +284,16 @@ export class TileCore {
     return true;
   }
 
-  static sortTiles(tiles: (TileCore | TileId)[]) {
+  static sortTiles(tiles: (TileCore | TileId)[]): (TileCore | TileId)[] {
     if (tiles.length == 0) {
       return tiles;
     }
-    return tiles.sort(
-      (a, b) =>
-        (typeof a == "number" ? a : a.id) - (typeof b == "number" ? b : b.id),
-    );
+
+    return tiles.sort((a, b) => {
+      const aId = typeof a === "number" ? a : a.id;
+      const bId = typeof b === "number" ? b : b.id;
+      return aId - bId;
+    });
   }
 
   static canHu(handTiles: readonly TileId[], tile = TileCore.voidId) {
@@ -346,6 +360,18 @@ export class TileCore {
     return handTiles.filter((t) => TileCore.isSame(t, target)).length >= 3;
   }
 
+  static canAngang(handTiles: readonly TileId[]): boolean {
+    const handTileSet = new Map<TileId, number>();
+    for (const tile of handTiles) {
+      const count = handTileSet.get(tile) || 0;
+      if (count === 3) {
+        return true;
+      }
+      handTileSet.set(tile, count + 1);
+    }
+    return false;
+  }
+
   static canChi(handTiles: readonly TileId[], target: TileId): boolean {
     const filteredTiles = []; // tiles list that does not contain the latest tile and duplicate tiles
     let previousTile = TileCore.voidId;
@@ -379,5 +405,447 @@ export class TileCore {
 
   isTiao() {
     return this.type === TileType.TIAO;
+  }
+
+  /**
+   * 分析手牌，统计牌型和计算分数
+   * @param tiles 手牌数组
+   * @returns 包含牌统计信息和分数的分析结果
+   */
+  private static analyzeTiles(tiles: readonly TileId[]) {
+    const sortedTiles = [...tiles].sort((a, b) => a - b);
+
+    // 统计每种牌的数量
+    const tileCount = new Map<string, { ids: TileId[]; count: number }>();
+    for (const tileId of sortedTiles) {
+      const tile = TileCore.fromId(tileId);
+      const key = `${tile.type}-${tile.index}`;
+      if (!tileCount.has(key)) tileCount.set(key, { ids: [], count: 0 });
+      const entry = tileCount.get(key)!;
+      entry.ids.push(tileId);
+      entry.count++;
+    }
+
+    // 给每张牌计算分数（分数越低越容易打出）
+    const tileScores = new Map<TileId, number>();
+
+    for (const tileId of sortedTiles) {
+      const tile = TileCore.fromId(tileId);
+      const key = `${tile.type}-${tile.index}`;
+      const entry = tileCount.get(key)!;
+
+      let score = 0;
+
+      // 刻子 / 杠子 → 保留
+      if (entry.count >= 3) {
+        score += 100;
+      }
+      // 对子 → 次高保留
+      else if (entry.count === 2) {
+        score += 50;
+      }
+      // 单张 → 基础分
+      else {
+        score += 10;
+      }
+
+      // 数牌顺子潜力
+      if (tile.isWan() || tile.isTong() || tile.isTiao()) {
+        const prevKey = `${tile.type}-${tile.index - 1}`;
+        const nextKey = `${tile.type}-${tile.index + 1}`;
+        const prev2Key = `${tile.type}-${tile.index - 2}`;
+        const next2Key = `${tile.type}-${tile.index + 2}`;
+
+        // 存在邻牌 → 增加保留分
+        if (tileCount.has(prevKey)) score += 20;
+        if (tileCount.has(nextKey)) score += 20;
+        if (tileCount.has(prev2Key)) score += 10;
+        if (tileCount.has(next2Key)) score += 10;
+
+        // 边张（1/9）孤张 → 减分，容易打出
+        if (tile.index === 1 || tile.index === 9) score -= 15;
+
+        // 中间牌（4/5/6） → 保留价值稍高
+        if (tile.index >= 4 && tile.index <= 6) score += 5;
+      } else {
+        // 字牌
+        if (entry.count === 1)
+          score -= 20; // 孤张字牌 → 优先打出
+        else if (entry.count === 2) score += 0; // 对子字牌 → 保留
+      }
+
+      tileScores.set(tileId, score);
+    }
+
+    return {
+      sortedTiles,
+      tileCount,
+      tileScores,
+    };
+  }
+
+  /**
+   * 判断麻将下一张牌应该打什么
+   * @param tiles 手牌数组, 长度可以是14/11/8/5/2，因为已经碰/吃的牌就不用考虑了
+   * @return 如果能胡牌，返回 null，否则返回一个 TileId
+   */
+  static decideDiscard(tiles: readonly TileId[]): TileId | null {
+    if (tiles.length === 0) return null;
+
+    // 1. 如果能胡牌，不出牌（返回 null 表示可以胡牌）
+    const { sortedTiles, tileScores } = TileCore.analyzeTiles(tiles);
+    if (TileCore.canHu(sortedTiles)) return null;
+
+    // 2. 找到分数最低的牌打出
+    let minScore = Infinity;
+    for (const tileId of sortedTiles) {
+      const score = tileScores.get(tileId) || 0;
+      if (score < minScore) {
+        minScore = score;
+      }
+    }
+
+    // 3. 如果有多张相同分数的牌，按类型优先级选择
+    const minScoreTiles = sortedTiles.filter(
+      (tileId) => (tileScores.get(tileId) || 0) === minScore,
+    );
+
+    // 优先打孤张字牌 → 边张 → 中间数牌
+    minScoreTiles.sort((a, b) => {
+      const tileA = TileCore.fromId(a);
+      const tileB = TileCore.fromId(b);
+
+      const weight = (tile: TileCore) => {
+        if (tile.type === TileType.JIAN) return 3;
+        if (tile.index === 1 || tile.index === 9) return 2;
+        return 1;
+      };
+
+      return weight(tileB) - weight(tileA); // 分值高的留着，低的先打
+    });
+
+    return minScoreTiles[0];
+  }
+
+  /**
+   * 判断麻将下一张牌是否应该吃/碰
+   * @param handTiles 手牌数组, 长度可以是13/10/7/4，因为已经碰/吃的牌就不用考虑了
+   * @param target 目标牌
+   * @param allowActions = [Chi, Peng]
+   * @return 如果应该吃/碰，返回 Action及参与action的tiles（不含target), 否则返回 null
+   */
+  static decideAction(
+    handTiles: readonly TileId[],
+    target: TileId,
+    allowActions: ActionType[],
+  ): { action: ActionType; tiles: TileId[] } | null {
+    if (handTiles.length === 0) return null;
+
+    // 1. 优先级：胡牌 > 杠 > 碰 > 吃
+    // 检查是否能胡牌（加上目标牌后）
+    if (allowActions.includes(ActionType.Hu)) {
+      if (TileCore.canHu(handTiles, target)) {
+        return { action: ActionType.Hu, tiles: [] }; // 胡牌不需要额外的tiles
+      }
+    }
+
+    // 2. 检查是否能杠
+    if (allowActions.includes(ActionType.Gang)) {
+      if (TileCore.canGang(handTiles, target)) {
+        // 找到用于杠的三张牌
+        const gangTiles = TileCore.findGangTiles(handTiles, target);
+        return { action: ActionType.Gang, tiles: gangTiles };
+      }
+    }
+
+    // 3. 分析手牌价值
+    const { tileCount } = TileCore.analyzeTiles(handTiles);
+
+    // 4. 检查是否应该碰
+    if (allowActions.includes(ActionType.Peng)) {
+      if (TileCore.canPeng(handTiles, target)) {
+        const pengResult = TileCore.evaluatePengValue(
+          handTiles,
+          target,
+          tileCount,
+        );
+        if (pengResult.value > 30) {
+          // 阈值可调
+          return { action: ActionType.Peng, tiles: pengResult.tiles };
+        }
+      }
+    }
+
+    // 5. 检查是否应该吃（优先级最低）
+    if (allowActions.includes(ActionType.Chi)) {
+      if (TileCore.canChi(handTiles, target)) {
+        const chiResult = TileCore.evaluateChiValue(handTiles, target);
+        if (chiResult.value > 25) {
+          // 阈值可调
+          return { action: ActionType.Chi, tiles: chiResult.tiles };
+        }
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * 评估碰牌的价值
+   */
+  private static evaluatePengValue(
+    handTiles: readonly TileId[],
+    target: TileId,
+    tileCount: Map<string, { ids: TileId[]; count: number }>,
+  ): { value: number; tiles: TileId[] } {
+    const targetTile = TileCore.fromId(target);
+    const targetKey = `${targetTile.type}-${targetTile.index}`;
+    const entry = tileCount.get(targetKey);
+
+    if (!entry || entry.count < 2) {
+      return { value: 0, tiles: [] };
+    }
+
+    // 找到用于碰的两张牌
+    const pengTiles = handTiles
+      .filter((tileId) => TileCore.isSame(tileId, target))
+      .slice(0, 2);
+
+    let value = 20; // 基础碰牌价值
+
+    // 字牌碰牌价值更高（字牌只能做刻子）
+    if (targetTile.type === TileType.JIAN) {
+      value += 15;
+    }
+
+    // 边张（1,9）碰牌价值较高（顺子潜力小）
+    if (
+      (targetTile.isWan() || targetTile.isTong() || targetTile.isTiao()) &&
+      (targetTile.index === 1 || targetTile.index === 9)
+    ) {
+      value += 10;
+    }
+
+    // 如果手牌中已经有很多这种牌，碰的价值更高
+    if (entry.count >= 3) {
+      value += 20; // 可以直接杠
+    }
+
+    // 模拟碰牌后的手牌，看是否更接近胡牌
+    const afterPengTiles = handTiles.filter(
+      (id) => !TileCore.isSame(id, target),
+    );
+    const beforeHuPotential = TileCore.calculateHuPotential(handTiles);
+    const afterHuPotential = TileCore.calculateHuPotential(afterPengTiles);
+
+    if (afterHuPotential > beforeHuPotential) {
+      value += 15;
+    }
+
+    return { value, tiles: pengTiles };
+  }
+
+  /**
+   * 评估吃牌的价值
+   */
+  private static evaluateChiValue(
+    handTiles: readonly TileId[],
+    target: TileId,
+  ): { value: number; tiles: TileId[] } {
+    const targetTile = TileCore.fromId(target);
+
+    // 字牌不能吃
+    if (targetTile.type === TileType.JIAN) {
+      return { value: 0, tiles: [] };
+    }
+
+    // 检查能组成的顺子类型和数量
+    const possibleChiCombos = TileCore.getPossibleChiCombinations(
+      handTiles,
+      target,
+    );
+
+    if (possibleChiCombos.length === 0) {
+      return { value: 0, tiles: [] };
+    }
+
+    let value = 15; // 基础吃牌价值
+
+    // 中间牌吃牌价值更高
+    if (targetTile.index >= 4 && targetTile.index <= 6) {
+      value += 5;
+    }
+
+    if (possibleChiCombos.length > 1) {
+      value += 10; // 有多种吃法选择
+    }
+
+    // 选择最优的组合（简化：取第一个组合）
+    const bestCombo = possibleChiCombos[0];
+
+    // 模拟吃牌后的手牌，看是否更接近胡牌
+    const afterChiTiles = handTiles.filter((id) => !bestCombo.includes(id));
+    const beforeHuPotential = TileCore.calculateHuPotential(handTiles);
+    const afterHuPotential = TileCore.calculateHuPotential(afterChiTiles);
+
+    if (afterHuPotential > beforeHuPotential) {
+      value += 10;
+    }
+
+    return { value, tiles: bestCombo };
+  }
+
+  /**
+   * 计算胡牌潜力（简化版）
+   */
+  private static calculateHuPotential(tiles: readonly TileId[]): number {
+    const { tileCount } = TileCore.analyzeTiles(tiles);
+    let potential = 0;
+
+    // 统计对子、刻子数量
+    let pairs = 0;
+    let triplets = 0;
+
+    for (const [, entry] of tileCount) {
+      if (entry.count === 2) pairs++;
+      if (entry.count >= 3) triplets++;
+    }
+
+    potential += pairs * 10 + triplets * 20;
+
+    // 统计顺子潜力
+    for (const [key, entry] of tileCount) {
+      if (entry.count > 0) {
+        const [type, index] = key.split("-");
+        const idx = parseInt(index);
+
+        if (type !== TileType.JIAN.toString()) {
+          // 检查顺子潜力
+          const nextKey1 = `${type}-${idx + 1}`;
+          const nextKey2 = `${type}-${idx + 2}`;
+
+          if (tileCount.has(nextKey1) && tileCount.has(nextKey2)) {
+            potential += 15; // 连续三张
+          } else if (tileCount.has(nextKey1) || tileCount.has(nextKey2)) {
+            potential += 8; // 有一张相邻
+          }
+        }
+      }
+    }
+
+    return potential;
+  }
+
+  /**
+   * 找到用于杠的三张牌
+   */
+  private static findGangTiles(
+    handTiles: readonly TileId[],
+    target: TileId,
+  ): TileId[] {
+    // 使用 filter 找到所有匹配的牌，然后取前3张
+    return handTiles
+      .filter((tileId) => TileCore.isSame(tileId, target))
+      .slice(0, 3);
+  }
+
+  /**
+   * 找到用于碰的两张牌
+   */
+  private static findPengTiles(
+    handTiles: readonly TileId[],
+    target: TileId,
+  ): TileId[] {
+    // 使用 filter 找到所有匹配的牌，然后取前2张
+    return handTiles
+      .filter((tileId) => TileCore.isSame(tileId, target))
+      .slice(0, 2);
+  }
+
+  /**
+   * 找到最优的吃牌组合
+   */
+  private static findBestChiTiles(
+    handTiles: readonly TileId[],
+    target: TileId,
+  ): TileId[] {
+    const possibleCombos = TileCore.getPossibleChiCombinations(
+      handTiles,
+      target,
+    );
+
+    if (possibleCombos.length === 0) {
+      return [];
+    }
+
+    // 简化：返回第一个可能的组合
+    // 在实际应用中，可以根据不同策略选择最优组合
+    return possibleCombos[0];
+  }
+
+  /**
+   * 获取可能的吃牌组合
+   */
+  private static getPossibleChiCombinations(
+    handTiles: readonly TileId[],
+    target: TileId,
+  ): TileId[][] {
+    const targetTile = TileCore.fromId(target);
+    const combinations: TileId[][] = [];
+
+    if (targetTile.type === TileType.JIAN) return combinations;
+
+    // 检查三种吃牌可能：ABC, XAB, ABX (A是目标牌)
+    const targetIndex = targetTile.index;
+
+    // 情况1: target-2, target-1, target (目标牌在最后)
+    if (targetIndex >= 3) {
+      const tile1 = handTiles.find((id) => {
+        const t = TileCore.fromId(id);
+        return t.type === targetTile.type && t.index === targetIndex - 2;
+      });
+      const tile2 = handTiles.find((id) => {
+        const t = TileCore.fromId(id);
+        return t.type === targetTile.type && t.index === targetIndex - 1;
+      });
+
+      if (tile1 !== undefined && tile2 !== undefined) {
+        combinations.push([tile1, tile2]);
+      }
+    }
+
+    // 情况2: target-1, target, target+1 (目标牌在中间)
+    if (targetIndex >= 2 && targetIndex <= 8) {
+      const tile1 = handTiles.find((id) => {
+        const t = TileCore.fromId(id);
+        return t.type === targetTile.type && t.index === targetIndex - 1;
+      });
+      const tile2 = handTiles.find((id) => {
+        const t = TileCore.fromId(id);
+        return t.type === targetTile.type && t.index === targetIndex + 1;
+      });
+
+      if (tile1 !== undefined && tile2 !== undefined) {
+        combinations.push([tile1, tile2]);
+      }
+    }
+
+    // 情况3: target, target+1, target+2 (目标牌在最前)
+    if (targetIndex <= 7) {
+      const tile1 = handTiles.find((id) => {
+        const t = TileCore.fromId(id);
+        return t.type === targetTile.type && t.index === targetIndex + 1;
+      });
+      const tile2 = handTiles.find((id) => {
+        const t = TileCore.fromId(id);
+        return t.type === targetTile.type && t.index === targetIndex + 2;
+      });
+
+      if (tile1 !== undefined && tile2 !== undefined) {
+        combinations.push([tile1, tile2]);
+      }
+    }
+
+    return combinations;
   }
 }

@@ -1,16 +1,4 @@
-import { type TileId, TileCore } from "./mj.tile-core";
-
-/**
- * 动作类型
- */
-export const enum ActionType {
-  Peng = "peng",
-  Chi = "chi",
-  Gang = "gang",
-  Angang = "angang",
-  Hu = "hu",
-  Pass = "pass",
-}
+import { type TileId, TileCore, ActionType } from "./mj.tile-core";
 
 export const enum ActionResult {
   Waiting = "waiting", // waiting for action

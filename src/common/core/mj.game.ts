@@ -123,6 +123,7 @@ export class Discard {
 }
 
 export class Game {
+  public name;
   public players: (Player | null)[] = []; // 玩家
   public walls: Wall[] = []; // 牌墙
   public discards: Discard[] = []; // 打出的牌
@@ -138,8 +139,8 @@ export class Game {
   public passedPlayers: Player[] = []; // 已经过的玩家，该属性仅用于client side
   public queuedActions: ActionDetail[] = []; // 等待处理的动作，该属性不用于Client Side
 
-  constructor() {
-    //
+  constructor(name: string = "default") {
+    this.name = name;
   }
 
   /**
@@ -1084,6 +1085,7 @@ export class Game {
 
   static fromJSON(data: any): Game {
     const game = new Game();
+    game.name = data.name || "default";
     game.players = data.players.map((playerData: any) =>
       playerData ? Player.fromJSON(playerData) : null,
     );

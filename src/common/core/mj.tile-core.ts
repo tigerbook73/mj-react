@@ -750,40 +750,6 @@ export class TileCore {
   }
 
   /**
-   * 找到用于碰的两张牌
-   */
-  private static findPengTiles(
-    handTiles: readonly TileId[],
-    target: TileId,
-  ): TileId[] {
-    // 使用 filter 找到所有匹配的牌，然后取前2张
-    return handTiles
-      .filter((tileId) => TileCore.isSame(tileId, target))
-      .slice(0, 2);
-  }
-
-  /**
-   * 找到最优的吃牌组合
-   */
-  private static findBestChiTiles(
-    handTiles: readonly TileId[],
-    target: TileId,
-  ): TileId[] {
-    const possibleCombos = TileCore.getPossibleChiCombinations(
-      handTiles,
-      target,
-    );
-
-    if (possibleCombos.length === 0) {
-      return [];
-    }
-
-    // 简化：返回第一个可能的组合
-    // 在实际应用中，可以根据不同策略选择最优组合
-    return possibleCombos[0];
-  }
-
-  /**
    * 获取可能的吃牌组合
    */
   private static getPossibleChiCombinations(

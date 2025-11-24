@@ -1,4 +1,4 @@
-import { TileCore, type TileId, TileType } from "./mj.tile-core";
+import { TileCore, TileId, TileType } from "./mj.tile-core";
 
 describe("TileCore", () => {
   it("should create a tile with correct properties", () => {
@@ -55,7 +55,8 @@ describe("TileCore", () => {
     expect(sortedTiles[2]).toBe(tile1);
   });
 
-  const clean = (ids: TileId[]) => ids.filter((id) => id !== TileCore.voidId && id !== -1);
+  const clean = (ids: TileId[]) =>
+    ids.filter((id) => id !== TileCore.voidId && id !== -1);
 
   describe("TileCore.canHu", () => {
     it("截图例子应当可胡", () => {

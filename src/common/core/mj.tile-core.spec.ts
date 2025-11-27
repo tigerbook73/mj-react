@@ -1,8 +1,8 @@
-import { TileCore, TileId, TileType } from "./mj.tile-core";
+import { TileCore, type TileId, TileType } from "./mj.tile-core";
 
 describe("TileCore", () => {
   it("should create a tile with correct properties", () => {
-    const tile = new TileCore(1, TileType.WAN, 1, "一万");
+    const tile = new TileCore(1, TileType.WAN, 1, "一万", 0, 1);
     expect(tile.id).toBe(1);
     expect(tile.type).toBe(TileType.WAN);
     expect(tile.index).toBe(1);

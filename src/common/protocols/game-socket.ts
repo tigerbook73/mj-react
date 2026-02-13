@@ -11,12 +11,12 @@ export class GameSocket {
     void err;
   };
 
-  constructor() {
+  constructor(url?: string) {
     // Get JWT token from localStorage or use "no-token" for backward compatibility
     const token = this.getAuthToken();
 
     // "undefined" means the URL will be computed from the `window.location` object
-    this.socket = io(undefined, {
+    this.socket = io(url, {
       auth: {
         token,
       },
@@ -49,10 +49,7 @@ export class GameSocket {
     console.error("Connection error:", err.message);
 
     // If token is invalid and not "no-token", try to fallback to guest
-    if (
-      err.message.includes("Unauthorized") &&
-      this.getAuthToken() !== "no-token"
-    ) {
+    if (err.message.includes("Unauthorized") && this.getAuthToken() !== "no-token") {
       console.warn("Authentication failed. Token may be invalid or expired.");
       this.errorCallback(err);
       // Optionally clear the token and reconnect as guest

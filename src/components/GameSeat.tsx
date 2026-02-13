@@ -17,11 +17,10 @@ export default React.memo(function GameSeat({
   position,
   userName,
   className,
-  ...props
 }: GameSeatProp & React.ComponentProps<"div">) {
   const positionName = positionMap[position];
   return (
-    <div className={cn("h-full w-full flex flex-col justify-center items-center bg-blue-100", className)} {...props}>
+    <div className={cn("h-full w-full flex flex-col justify-center items-center bg-blue-100", className)}>
       <div className="m-2 px-2 py-1 rounded-md shadow-md bg-yellow-400">{positionName}</div>
       <div className="m-2">{userName}</div>
     </div>

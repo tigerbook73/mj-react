@@ -37,6 +37,7 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
+    outDir: "dist/react",
     write: mode != "dry",
   },
   test: {

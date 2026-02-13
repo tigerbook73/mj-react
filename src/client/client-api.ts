@@ -1,4 +1,4 @@
 import { ClientApi } from "@/common/protocols/apis.models";
 import { GameSocket } from "@/common/protocols/game-socket";
 
-export const clientApi = new ClientApi(new GameSocket());
+export const clientApi = new ClientApi(new GameSocket(import.meta.env.VITE_WEB_SOCKET_URL));

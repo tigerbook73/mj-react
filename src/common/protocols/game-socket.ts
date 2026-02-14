@@ -11,14 +11,11 @@ export class GameSocket {
     void err;
   };
 
-  constructor(url?: string) {
-    // Get JWT token from localStorage or use "no-token" for backward compatibility
-    const token = this.getAuthToken();
-
+  constructor(url?: string, token?: string) {
     // "undefined" means the URL will be computed from the `window.location` object
     this.socket = io(url, {
       auth: {
-        token,
+        token: token || "",
       },
       reconnection: true,
       reconnectionAttempts: 5,
@@ -27,10 +24,6 @@ export class GameSocket {
     this.socket.on("connect", this.onConnected.bind(this));
     this.socket.on("disconnect", this.onDisconnected.bind(this));
     this.socket.on("connect_error", this.onConnectError.bind(this));
-  }
-
-  private getAuthToken(): string {
-    return localStorage.getItem("jwt_token") || "no-token";
   }
 
   private onConnected() {
@@ -48,13 +41,9 @@ export class GameSocket {
   private onConnectError(err: Error) {
     console.error("Connection error:", err.message);
 
-    // If token is invalid and not "no-token", try to fallback to guest
-    if (err.message.includes("Unauthorized") && this.getAuthToken() !== "no-token") {
+    if (err.message.includes("Unauthorized")) {
       console.warn("Authentication failed. Token may be invalid or expired.");
       this.errorCallback(err);
-      // Optionally clear the token and reconnect as guest
-      // localStorage.removeItem("jwt_token");
-      // this.updateAuth(null);
     }
   }
 
@@ -71,17 +60,16 @@ export class GameSocket {
   }
 
   /**
-   * Update the socket authentication token and reconnect
-   * Call this after successful login/logout
+   * Reconnect with a new WS token
    */
-  updateAuth(token: string | null) {
-    const authToken = token || "no-token";
+  connect(token: string) {
     if (this.socket) {
-      (this.socket.io.opts as any).auth = { token: authToken };
+      (this.socket.io.opts as any).auth = { token };
 
-      // If currently connected, reconnect with new token
       if (this.socket.connected) {
         this.socket.disconnect().connect();
+      } else {
+        this.socket.connect();
       }
     }
   }
@@ -92,7 +80,6 @@ export class GameSocket {
 
   sendAndWait<T extends GameResponse>(data: GameRequest): Promise<T> {
     if (!this.socket) {
-      // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
       return Promise.reject({
         type: data.type,
         state: "error",

@@ -2,12 +2,10 @@ import useMJStore, { type RoomModelInStore, type SeatModelInStore } from "@/stor
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 import GameSeat from "./GameSeat";
-import { Position } from "@/common/core/mj.game";
-import { PlayerRole, UserType } from "@/common/models/common.types";
-import { RoomStatus } from "@/common/models/room.model";
-import { clientApi } from "@/client/client-api";
+import { PlayerRole, Position, RoomStatus, UserType } from "@/common";
 import { toast } from "sonner";
 import React from "react";
+import { socketClient } from "@/client/socket-client";
 
 interface GameRoomProps {
   room: RoomModelInStore;
@@ -53,7 +51,7 @@ export default React.memo(function GameRoom({
     // already at the position
     if (myRoom?.name == room.name && myPosition === seat.position) {
       try {
-        await clientApi.leaveRoom(room.name);
+        await socketClient.leaveRoom(room.name);
       } catch (error) {
         toast.warning("Failed to leave room");
         console.error("Failed to leave room", error);
@@ -72,7 +70,7 @@ export default React.memo(function GameRoom({
       if (myPosition !== null) {
         // if the player is currently in a room, leave it
         try {
-          await clientApi.leaveRoom(myRoom!.name);
+          await socketClient.leaveRoom(myRoom!.name);
         } catch (error) {
           toast.warning("Failed to leave current room");
           console.error("Failed to leave current room", error);
@@ -82,7 +80,7 @@ export default React.memo(function GameRoom({
 
       // join the new room
       try {
-        await clientApi.joinRoom(room.name, seat.position);
+        await socketClient.joinRoom(room.name, seat.position);
       } catch (error) {
         toast.warning("Failed to join room");
         console.error("Failed to join room", error);
@@ -97,7 +95,7 @@ export default React.memo(function GameRoom({
       return;
     }
     try {
-      await clientApi.enterGame(room.name);
+      await socketClient.enterGame(room.name);
     } catch (error) {
       toast.warning("Failed to enter game");
       console.error("Failed to enter game", error);

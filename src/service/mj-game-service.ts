@@ -1,23 +1,23 @@
-import { clientApi } from "@/client/client-api";
-import type { GameEvent } from "@/common/protocols/apis.models";
+import { socketClient } from "@/client/socket-client";
+import type { GameEvent } from "@/common";
 import useMJStore from "@/stores/mj-store";
 
 class MjGameService {
   boot(): void {
     const { setConnected } = useMJStore.getState();
 
-    clientApi.gameSocket.onConnect(() => {
+    socketClient.onConnect(() => {
       setConnected(true);
       console.log(`[${new Date().toISOString()}] setConnected(true)`);
     });
 
-    clientApi.gameSocket.onDisconnect(() => {
+    socketClient.onDisconnect(() => {
       setConnected(false);
       console.log(`[${new Date().toISOString()}] setConnected(false)`);
     });
 
     // game event
-    clientApi.gameSocket.onReceive((event) => this.onReceive(event));
+    socketClient.onReceive((event) => this.onReceive(event));
   }
 
   onReceive(event: GameEvent): void {
@@ -29,11 +29,11 @@ class MjGameService {
       setCurrentGame,
     } = useMJStore.getState();
 
-    event = clientApi.parseEvent(event);
+    event = socketClient.parseEvent(event);
     setRoomList(event.data.rooms);
-    setCurrentRoom(clientApi.findMyRoom(event));
-    setCurrentPosition(clientApi.findMyPlayerModel(event)?.position ?? null);
-    setCurrentGame(clientApi.findMyGame(event));
+    setCurrentRoom(socketClient.findMyRoom(event));
+    setCurrentPosition(socketClient.findMyPlayerModel(event)?.position ?? null);
+    setCurrentGame(socketClient.findMyGame(event));
 
     console.log(`[${new Date().toISOString()}] onReceive(${event.type})`);
   }

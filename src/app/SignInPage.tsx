@@ -2,13 +2,13 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import useMJStore from "@/stores/mj-store";
-import { clientApi } from "@/client/client-api";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { authService } from "@/client/auth-service";
 
 const formSchema = z
   .object({
@@ -39,7 +39,7 @@ export default function SignInPage() {
   const onSubmit = async (formData: z.infer<typeof formSchema>) => {
     try {
       setLoading(true);
-      await clientApi.signIn(formData.email, formData.password);
+      await authService.loginOrRegister(formData.email, formData.password);
       setUser(formData);
       setSignedIn(true);
     } catch (e) {

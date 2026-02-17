@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import GameTile from "../components/GameTile";
 import { Direction } from "@/lib/direction";
-import { TileCore } from "@/common/core/mj.tile-core";
+import { TileCore } from "@/common";
 
 const meta = {
   component: GameTile,
@@ -17,10 +17,13 @@ const meta = {
         type: "select",
         labels: TileCore.allTiles
           .filter((_, i) => !(i % 4))
-          .reduce((acc, tile) => {
-            acc[tile.id] = tile.name;
-            return acc;
-          }, {} as Record<number, string>),
+          .reduce(
+            (acc, tile) => {
+              acc[tile.id] = tile.name;
+              return acc;
+            },
+            {} as Record<number, string>,
+          ),
       },
       options: TileCore.allTiles.filter((_, i) => !(i % 4)).map((tile) => tile.id),
     },

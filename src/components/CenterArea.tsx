@@ -1,9 +1,9 @@
-import { GameState, Position } from "@/common/core/mj.game";
-import { clientApi } from "@/client/client-api";
+import { GameState, Position } from "@/common";
 import useMJStore from "@/stores/mj-store";
 import { CommonUtil, Direction } from "@/lib/direction";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
+import { socketClient } from "@/client/socket-client";
 
 const commandMap = {
   [GameState.Init]: "start",
@@ -39,7 +39,7 @@ export default function CenterArea() {
 
   const handleStart = () => {
     try {
-      clientApi.startGame();
+      socketClient.startGame();
     } catch (e) {
       toast.error("Game start failed");
       console.error("Game start failed", e);
@@ -48,7 +48,7 @@ export default function CenterArea() {
 
   const handleReset = () => {
     try {
-      clientApi.resetGame();
+      socketClient.resetGame();
     } catch (e) {
       toast.error("Game reset failed");
       console.error("Game reset failed", e);

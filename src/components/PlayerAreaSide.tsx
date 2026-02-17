@@ -1,9 +1,8 @@
 import { useState } from "react";
 import GameTile, { type GameTileProp } from "./GameTile";
-import { TileCore, type TileId } from "@/common/core/mj.tile-core";
+import { GameState, Position, TileCore, type TileId } from "@/common";
 import { CommonUtil, Direction } from "@/lib/direction";
-import { GameState, Position } from "@/common/core/mj.game";
-import { clientApi } from "@/client/client-api";
+import { socketClient } from "@/client/socket-client";
 import useMJStore from "@/stores/mj-store";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
@@ -59,7 +58,7 @@ export default function PlayerAreaSide({ direction }: Props) {
       size,
       back: myPosition !== thisPlayer.position && !open,
       selected: selectedTiles.includes(id),
-    })
+    }),
   );
 
   const openTiles = thisPlayer.openedSets.map((set) =>
@@ -70,8 +69,8 @@ export default function PlayerAreaSide({ direction }: Props) {
         size,
         back: false,
         selected: selectedTiles.includes(tile),
-      })
-    )
+      }),
+    ),
   );
 
   // state is used to contol the action buttons
@@ -178,7 +177,7 @@ export default function PlayerAreaSide({ direction }: Props) {
   const handleDrop = () => {
     if (canDo(showDrop)) {
       try {
-        clientApi.actionDrop(selectedTiles[0]);
+        socketClient.actionDrop(selectedTiles[0]);
         clearSelected();
       } catch (e) {
         toast.warning("Drop tile failed");
@@ -203,7 +202,7 @@ export default function PlayerAreaSide({ direction }: Props) {
   const handleZimo = () => {
     if (canDo(showZimo)) {
       try {
-        clientApi.actionZimo();
+        socketClient.actionZimo();
       } catch (e) {
         toast.warning("Zimo failed");
         console.error("Zimo failed", e);
@@ -219,7 +218,7 @@ export default function PlayerAreaSide({ direction }: Props) {
   const handlePass = () => {
     if (showPass.show) {
       try {
-        clientApi.actionPass();
+        socketClient.actionPass();
       } catch (e) {
         toast.warning("Pass failed");
         console.error("Pass failed", e);
@@ -248,7 +247,7 @@ export default function PlayerAreaSide({ direction }: Props) {
   function handlePeng() {
     if (canDo(showPeng)) {
       try {
-        clientApi.actionPeng([selectedTiles[0], selectedTiles[1]]);
+        socketClient.actionPeng([selectedTiles[0], selectedTiles[1]]);
       } catch (e) {
         toast.warning("Peng failed");
         console.error("Peng failed", e);
@@ -278,7 +277,7 @@ export default function PlayerAreaSide({ direction }: Props) {
   function handleGang() {
     if (canDo(showGang)) {
       try {
-        clientApi.actionGang([selectedTiles[0], selectedTiles[1], selectedTiles[2]]);
+        socketClient.actionGang([selectedTiles[0], selectedTiles[1], selectedTiles[2]]);
       } catch (e) {
         toast.warning("Gang failed");
         console.error("Gang failed", e);
@@ -320,7 +319,7 @@ export default function PlayerAreaSide({ direction }: Props) {
   function handleChi() {
     if (canDo(showChi)) {
       try {
-        clientApi.actionChi([selectedTiles[0], selectedTiles[1]]);
+        socketClient.actionChi([selectedTiles[0], selectedTiles[1]]);
       } catch (e) {
         toast.warning("Chi failed");
         console.error("Chi failed", e);
@@ -344,7 +343,7 @@ export default function PlayerAreaSide({ direction }: Props) {
   const handleHu = () => {
     if (canDo(showHu)) {
       try {
-        clientApi.actionHu();
+        socketClient.actionHu();
       } catch (e) {
         toast.warning("Hu failed");
         console.error("Hu failed", e);
@@ -365,7 +364,7 @@ export default function PlayerAreaSide({ direction }: Props) {
       className={cn(
         "size-full p-1 flex justify-center items-center",
         clsFlex,
-        thisPlayer.position === currentPlayer.position ? "bg-green-500" : "bg-blue-300"
+        thisPlayer.position === currentPlayer.position ? "bg-green-500" : "bg-blue-300",
       )}
     >
       <div className={cn("w-20/24 flex justify-between items-center gap-2", clsFlex)}>

@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Position } from "@/common/core/mj.game";
+import { Position } from "@/common";
 import type { SeatModelInStore } from "@/stores/mj-store";
 import React from "react";
 

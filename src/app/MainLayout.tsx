@@ -5,7 +5,8 @@ import { Outlet, useLocation, useNavigate, useNavigation } from "react-router-do
 import { AppSidebar } from "./AppSideBar";
 import { Suspense, useEffect } from "react";
 import useMJStore, { AppState } from "@/stores/mj-store";
-import { clientApi } from "@/client/client-api";
+import { socketClient } from "@/client/socket-client";
+import { authService } from "@/client/auth-service";
 
 const stateToPath = {
   [AppState.Unconnected]: "/connecting",
@@ -36,7 +37,7 @@ export default function MainLayout() {
 
   const handleSignOut = async () => {
     try {
-      await clientApi.signOut();
+      await authService.logout();
       setSignedIn(false);
     } catch (e) {
       console.error(e);
@@ -49,7 +50,7 @@ export default function MainLayout() {
     }
 
     try {
-      await clientApi.quitGame(myRoom.name);
+      await socketClient.quitGame(myRoom.name);
     } catch (e) {
       console.error(e);
     }

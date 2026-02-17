@@ -1,9 +1,8 @@
 import GameTile, { type GameTileProp } from "./GameTile";
 import { CommonUtil, Direction } from "@/lib/direction";
 import useMJStore from "@/stores/mj-store";
-import { Position } from "@/common/core/mj.game";
+import { Position, TileCore } from "@/common";
 import { cn } from "@/lib/utils";
-import { TileCore } from "@/common/core/mj.tile-core";
 
 interface DiscardAreaProps {
   direction: Direction;
@@ -22,7 +21,7 @@ export default function DiscardAreaSide({ direction }: DiscardAreaProps) {
   const firstRow = CommonUtil.extendArrayToLength(
     discardTiles.slice(firstRowStartIndex, firstRowStartIndex + rowLength),
     rowLength,
-    TileCore.voidId
+    TileCore.voidId,
   ).map(
     (tileId): GameTileProp => ({
       tileId: tileId,
@@ -30,14 +29,14 @@ export default function DiscardAreaSide({ direction }: DiscardAreaProps) {
       size,
       back: false,
       selected: false,
-    })
+    }),
   );
 
   const startIndex = direction === Direction.Bottom || direction === Direction.Right ? rowLength : 0;
   const secondRow = CommonUtil.extendArrayToLength(
     discardTiles.slice(startIndex, startIndex + rowLength),
     rowLength,
-    TileCore.voidId
+    TileCore.voidId,
   ).map(
     (tileId): GameTileProp => ({
       tileId: tileId,
@@ -45,7 +44,7 @@ export default function DiscardAreaSide({ direction }: DiscardAreaProps) {
       size,
       back: false,
       selected: false,
-    })
+    }),
   );
 
   return (

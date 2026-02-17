@@ -1,7 +1,5 @@
 import { create, type StateCreator } from "zustand";
-import { RoomModel } from "@/common/models/room.model";
-import type { PlayerModel } from "@/common/models/player.model";
-import type { Game, Position } from "@/common/core/mj.game";
+import { RoomModel, type Game, type PlayerModel, type Position } from "@/common";
 import type { InterfaceWithoutMethod } from "@/helper/types-helper";
 import { immer } from "zustand/middleware/immer";
 import { devtools } from "zustand/middleware";
@@ -61,10 +59,8 @@ interface MJStore {
 
 const storeCreator: StateCreator<MJStore> = (set: any) => {
   const refreshAppState = (state: MJStore) => {
-    const { connected, signedIn, currentGame } = state;
-    if (!connected) {
-      state.appState = AppState.Unconnected;
-    } else if (!signedIn) {
+    const { signedIn, currentGame } = state;
+    if (!signedIn) {
       state.appState = AppState.UnSignedIn;
     } else if (!currentGame) {
       state.appState = AppState.InLobby;
@@ -141,7 +137,7 @@ const storeCreator: StateCreator<MJStore> = (set: any) => {
 
   const reset = () => {
     set((state: MJStore) => {
-      state.appState = AppState.Unconnected;
+      state.appState = AppState.UnSignedIn;
       state.connected = false;
       state.user = { email: "", password: "" };
       state.roomList = [];
@@ -153,7 +149,7 @@ const storeCreator: StateCreator<MJStore> = (set: any) => {
 
   return {
     // app state
-    appState: AppState.Unconnected,
+    appState: AppState.UnSignedIn,
 
     // connected state
     connected: false,
@@ -194,7 +190,7 @@ const storeCreator: StateCreator<MJStore> = (set: any) => {
 const useMJStore =
   process.env.NODE_ENV === "development"
     ? create<MJStore, [["zustand/devtools", never], ["zustand/immer", never]]>(
-        devtools(immer(storeCreator), { name: "MJStore" })
+        devtools(immer(storeCreator), { name: "MJStore" }),
       )
     : create<MJStore, [["zustand/immer", never]]>(immer(storeCreator));
 

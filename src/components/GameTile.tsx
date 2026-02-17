@@ -1,4 +1,4 @@
-import { TileCore, type TileId } from "@/common/core/mj.tile-core";
+import { TileCore, type TileId } from "@/common";
 import { Direction } from "@/lib/direction";
 import { cn } from "@/lib/utils";
 
@@ -87,7 +87,7 @@ export default function GameTile({
     "flex justify-center items-center",
     tileId !== TileCore.voidId && !back && clsTile,
     tileId !== TileCore.voidId && back && clsTileBack,
-    selected && clsTileSelected
+    selected && clsTileSelected,
   );
 
   const tileStyle = {
@@ -100,7 +100,7 @@ export default function GameTile({
     direction === Direction.Top && clsImageTop,
     direction === Direction.Bottom && clsImageBottom,
     direction === Direction.Left && clsImageLeft,
-    direction === Direction.Right && clsImageRight
+    direction === Direction.Right && clsImageRight,
   );
 
   return (

@@ -1,4 +1,4 @@
-import { TileCore } from "@/common/core/mj.tile-core";
+import { TileCore } from "@/common";
 import GameTile from "@/components/GameTile";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";

@@ -1,7 +1,7 @@
 import GameTile, { type GameTileProp } from "./GameTile";
 import { CommonUtil, Direction } from "@/lib/direction";
 import useMJStore from "@/stores/mj-store";
-import { Position } from "@/common/core/mj.game";
+import { Position } from "@/common";
 import { cn } from "@/lib/utils";
 
 interface WallAreaProps {
@@ -27,7 +27,7 @@ export default function WallAreaSide({ direction }: WallAreaProps) {
           size,
           back: !open,
           selected: false,
-        })
+        }),
       );
   })();
 
@@ -42,7 +42,7 @@ export default function WallAreaSide({ direction }: WallAreaProps) {
           size,
           back: !open,
           selected: false,
-        })
+        }),
       );
   })();
 

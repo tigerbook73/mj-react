@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import WallAreaSide from "./WallAreaSide";
 import { Direction } from "@/lib/direction";
 import useMJStore, { AppState } from "@/stores/mj-store";
-import { Game, Position } from "@/common/core/mj.game";
+import { Game, Position } from "@/common";
 
 const meta = {
   title: "Components/WallAreaSide",
@@ -20,7 +20,7 @@ const meta = {
       game.init([Position.East, Position.South, Position.West, Position.North]);
 
       useMJStore.setState({
-        appState: AppState.Unconnected,
+        appState: AppState.UnSignedIn,
         connected: false,
         user: {
           email: "example@email.com",

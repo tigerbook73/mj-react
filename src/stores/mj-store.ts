@@ -5,6 +5,7 @@ import { immer } from "zustand/middleware/immer";
 import { devtools } from "zustand/middleware";
 
 export enum AppState {
+  Verifying = "VERIFYING",
   Unconnected = "UNCONNECTED",
   UnSignedIn = "UNSIGNED_IN",
   InLobby = "IN_LOBBY",
@@ -149,7 +150,7 @@ const storeCreator: StateCreator<MJStore> = (set: any) => {
 
   return {
     // app state
-    appState: AppState.UnSignedIn,
+    appState: AppState.Verifying,
 
     // connected state
     connected: false,

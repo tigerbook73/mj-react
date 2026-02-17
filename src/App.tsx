@@ -12,6 +12,7 @@ const router = createBrowserRouter([
     Component: MainLayout,
     children: [
       { index: true, lazy: async () => ({ Component: (await import("./app/Home")).default }) },
+      { path: "verifying", lazy: async () => ({ Component: (await import("./app/VerifyingPage")).default }) },
       { path: "connecting", lazy: async () => ({ Component: (await import("./app/ConnectingPage")).default }) },
       { path: "sign-in", lazy: async () => ({ Component: (await import("./app/SignInPage")).default }) },
       { path: "lobby", lazy: async () => ({ Component: (await import("./app/LobbyPage")).default }) },

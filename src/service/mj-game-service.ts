@@ -1,3 +1,4 @@
+import { authService } from "@/client/auth-service";
 import { socketClient } from "@/client/socket-client";
 import type { GameEvent } from "@/common";
 import useMJStore from "@/stores/mj-store";
@@ -18,6 +19,22 @@ class MjGameService {
 
     // game event
     socketClient.onReceive((event) => this.onReceive(event));
+
+    // try to restore session from existing cookie
+    this.tryRestoreSession();
+  }
+
+  private async tryRestoreSession(): Promise<void> {
+    const { setUser, setSignedIn } = useMJStore.getState();
+
+    const restored = await authService.restoreSession();
+    if (restored) {
+      const user = authService.getCurrentUser();
+      setUser({ email: user?.email ?? "", password: "" });
+      setSignedIn(true);
+    } else {
+      setSignedIn(false);
+    }
   }
 
   onReceive(event: GameEvent): void {

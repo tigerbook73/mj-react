@@ -9,6 +9,7 @@ import { socketClient } from "@/client/socket-client";
 import { authService } from "@/client/auth-service";
 
 const stateToPath = {
+  [AppState.Verifying]: "/verifying",
   [AppState.Unconnected]: "/connecting",
   [AppState.UnSignedIn]: "/sign-in",
   [AppState.InLobby]: "/lobby",
